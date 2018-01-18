@@ -9,6 +9,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,29 +23,75 @@ import com.mywallet.util.ResponseUtil;
 @Transactional
 @Service
 public class UserService {
-	
+
 	private final static Logger logger = Logger.getLogger(UserService.class.getName());
-	
+
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private MyWalletConfig myWalletConfig;
+
+	@Autowired
+	private RoleService roleService;
 	
 	public UserService(){
 		logger.info("UserService class Bean is created : ");
 	}
-	
+
+	@PostConstruct
+	public void init(){
+		createDefaultAdminUser();
+	}
+
+	void createDefaultAdminUser(){
+
+		Boolean active = myWalletConfig.getActive();
+		String email = myWalletConfig.getEmail();
+		String password =	myWalletConfig.getPassword();
+		Boolean isKYCVerified =	myWalletConfig.getIsKYCVerified();
+		String role = myWalletConfig.getRole();
+		String username = myWalletConfig.getUsername();
+
+		if(active == null || email == null || password == null || isKYCVerified == null || role == null || username == null)
+		{
+			logger.error("Default admin user creation fields missing : Deault admin user not created ");
+			return;
+		}
+		User alreadyExist = findByEmail(email.trim());
+		if(alreadyExist != null){
+		    logger.info("Admin user : "+email+" already exist**********8");
+			return;
+		}
+		
+		Role adminRole = roleService.findByRoleName(role.trim());
+		if(adminRole == null){
+			logger.error("RoleName : "+role+" not found admin user not created");
+			return;
+		}
+
+		User user = new User(username.trim(),email.trim(),password.trim(),active,true,isKYCVerified);
+		user.setRole(adminRole);
+		user = save(user);
+		if(user == null){
+			logger.error("************Default Admin User not created ***************");
+		}
+		
+	}
+
 	public User persistUser(User user){
 		System.out.println("user.getAddressArray()"+user.getAddressArray().size());
 		logger.info("inside persistUser UserDB method :");
 		try{user.setEmailVerified(true);
-			
-			return userRepository.saveAndFlush(user);
+
+		return userRepository.saveAndFlush(user);
 		}
 		catch(Exception exception){
 			logger.error("Save  persistUser in database : "+exception);
 			return null;
 		}
 	}
-	
+
 	public User findByRole(Role role){
 		logger.info("inside findByRole method :");
 		try{
@@ -55,17 +102,17 @@ public class UserService {
 			return null;
 		}
 	}
-	
-	
+
+
 	public User save(User user)throws DataIntegrityViolationException{
 		logger.info("inside create UserDB method :");
 		try{
 			return userRepository.save(user);
-			
+
 		}catch(DataIntegrityViolationException de){
 			logger.error("user already exist with email in database : "+de);
 			throw de;
-		//	return null;
+			//	return null;
 		}
 		catch(Exception exception){
 			logger.error("Save  users in database : "+exception.getMessage());
@@ -73,7 +120,7 @@ public class UserService {
 		}
 
 	}
-	
+
 	public List<User> getAllUserfromDB(){
 		logger.info("inside getAllUserfromDB method :");
 		try{
@@ -83,7 +130,7 @@ public class UserService {
 			return null;
 		}
 	}
-	
+
 	public User findByUserName(String userName){
 		logger.info("Enter the user name in the database  :");
 		try {
@@ -92,9 +139,9 @@ public class UserService {
 			logger.error("No user name in the database",exception);
 			return null;
 		}
-		
+
 	}
-	
+
 	public User findByEmail(String email){
 		logger.info("Enter the find by email user email from the database  :");
 		try{
@@ -105,8 +152,8 @@ public class UserService {
 			return null;
 		}
 	}
-	
-	
+
+
 	public User findByEmailAndPassword(String email, String password) {
 		logger.info("inside findByRoleNameAndIsActive method :");
 		try{
@@ -117,22 +164,22 @@ public class UserService {
 			return null;
 		}
 	}
-	
+
 	public Boolean findIsActive(Boolean isActive){
 		logger.info("inside isActive method :");
 		try{
-		 	 userRepository.findByActive(isActive); 
-		 	return true; 
+			userRepository.findByActive(isActive); 
+			return true; 
 		}
 		catch(Exception exception){
-			
+
 			logger.error("NO Object isActive from database :"+exception);
 			return false;
 		}
-		
+
 	}
-	
-	
+
+
 	public User findByPassword(String password){
 		logger.info("Enter the user password in the database  :");
 		try {
@@ -141,22 +188,22 @@ public class UserService {
 			logger.error("No user password in the database",exception);
 			return null;
 		}
-		
+
 	}
-	
+
 	@Transactional
 	public Boolean deleteUserByUserId(Integer userId){
 		logger.info("inside deleteUserByUserId method :");
 		try{
-		 	 userRepository.deleteUserByUserId(userId); 
-		 	return true; 
+			userRepository.deleteUserByUserId(userId); 
+			return true; 
 		}
 		catch(Exception exception){
-			
+
 			logger.error("NO Object Deleted from database :"+exception);
 			return false;
 		}
-		
+
 	}
 
 	public User findByUserNameAndIsActive(String userName, Boolean isActive) {
@@ -184,5 +231,5 @@ public class UserService {
 	public Map<String,Object> loginUser(){
 		return null;
 	}
-	
+
 }
