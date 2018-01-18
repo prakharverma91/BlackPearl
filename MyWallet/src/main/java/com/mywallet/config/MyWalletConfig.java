@@ -31,6 +31,44 @@ public class MyWalletConfig {
 	@Value("${UPLOADED_URL_FOLDER}") 
 	String url; 
 	
+
+	@Value("${mywallet.user.username}") 
+	String username;
+	@Value("${mywallet.user.email}") 
+	String email;
+	@Value("${mywallet.user.password}") 
+	String password;
+	@Value("${mywallet.user.active}") 
+	Boolean active;
+	@Value("${mywallet.user.isKYCVerified}") 
+	Boolean isKYCVerified;
+	@Value("${mywallet.user.role}") 
+	String role;
+		
+	public String getRole() {
+		return role;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public Boolean getIsKYCVerified() {
+		return isKYCVerified;
+	}
+
 	public MyWalletConfig(){
 		logger.info("MyWalletConfig class Bean is created : ");
 	}

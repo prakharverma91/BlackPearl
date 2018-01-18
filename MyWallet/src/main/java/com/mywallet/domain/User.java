@@ -30,7 +30,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
 	
-	@Pattern(regexp="[a-zA-Z]+",message="UserName only alphabets")
+	@Pattern(regexp="[a-zA-Z ]+",message="UserName only alphabets")
 	@Size(min=3,message="userName must be atleast 3 characters !")
 	@NotNull(message="userName cannot be null")
 	@NotEmpty(message="userName can not be empty")
@@ -213,6 +213,5 @@ public class User {
 //				+ ", active=" + active + ", isEmailVerified=" + isEmailVerified + ", role=" + role + ", addressArray="
 //				+ addressArray + ", loginHistoryArray=" + loginHistoryArray + "]";
 //	}
-
 	
 }
