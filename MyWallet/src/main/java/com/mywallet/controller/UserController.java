@@ -36,6 +36,7 @@ import com.mywallet.domain.LoginHistory;
 import com.mywallet.domain.User;
 import com.mywallet.domain.req.Req_ProfileUpdate;
 import com.mywallet.services.AddressService;
+import com.mywallet.services.LoginHistoryService;
 import com.mywallet.services.UserService;
 import com.mywallet.util.ObjectMap;
 import com.mywallet.util.ResponseUtil;
@@ -52,6 +53,9 @@ public class UserController{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LoginHistoryService loginHistoryService;
 	
 	@Autowired
 	private MyWalletConfig myWalletConfig;
@@ -117,12 +121,15 @@ public class UserController{
 		
 		Map<String , Object> map = ObjectMap.objectMap(userObj,"userId~email~userName~isEmailVerified~isKYCVerified~upLoadProfilePic");
 		map.put("addressArray", ObjectMap.objectMap(userObj.getAddressArray()));
-		Collections.sort(userObj.getLoginHistoryArray(), new Comparator<LoginHistory>() {
+		List<LoginHistory> loginHistories = loginHistoryService.getUserLoginHistory(userObj, 10);
+		if(loginHistories != null){
+		Collections.sort(loginHistories, new Comparator<LoginHistory>() {
 			  public int compare(LoginHistory o1, LoginHistory o2) {
 			      return o2.getLoginTime().compareTo(o1.getLoginTime());
 			  }
 			});
-		map.put("loginHistoryArray",ObjectMap.objectMap(userObj.getLoginHistoryArray()));
+		}
+		map.put("loginHistoryArray",ObjectMap.objectMap(loginHistories));
 		
 		return  ResponseUtil.successResponse("We successfully get all users profile data : ",map, HttpStatus.OK);
 	}
@@ -434,5 +441,19 @@ public class UserController{
 		map.put("iskycverified",ObjectMap.objectMap(userObj.getIsKYCVerified()));
 		return ResponseUtil.successResponse("Successfully modified iskycverified : ", map,HttpStatus.OK);
 	}
+
+	@ApiAction
+	@RequestMapping(value="/users/count", method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Object> getTotalUsersCount(){
+
+		logger.info("Inside getTotalUsersCount APi :");
+		
+		Map<String,Object> response = userService.getTotalUsersCount();
+		
+	//	ResponseUtil.errorResp("User count not fetched ", HttpStatus.INTERNAL_SERVER_ERROR);
+		
+		return ResponseUtil.successResponse("Successfully fetched user count", response,HttpStatus.OK);
+	}
+	
 
 }

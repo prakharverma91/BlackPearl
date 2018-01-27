@@ -185,11 +185,12 @@ public class UnAuthController {
 		}
 
 		mailService.userRegisterMail(newUser);
-		Map<String,Object> reMap = ObjectMap.objectMap(newUser);
-		reMap.put("addressArray", ObjectMap.objectMap(newUser.getAddressArray()));
-		reMap.put("role",ObjectMap.objectMap(newUser.getRole()));
+		Map<String,Object> response = ObjectMap.objectMap(newUser,"userId~email~active~isEmailVerified~isKYCVerified");
+		response.put("addressArray", ObjectMap.objectMap(newUser.getAddressArray()));
+		response.put("role",ObjectMap.objectMap(newUser.getRole()));
+		response.put("lastLogin", newUser.getlastLogin());
 
-		return ResponseUtil.successResponse("User succesfully registed in mywallet",reMap,HttpStatus.OK);
+		return ResponseUtil.successResponse("User succesfully registed in mywallet",response,HttpStatus.OK);
 	}
 
 	@ApiAction

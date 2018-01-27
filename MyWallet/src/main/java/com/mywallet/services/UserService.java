@@ -1,24 +1,23 @@
 package com.mywallet.services;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import javax.validation.ConstraintViolationException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.mywallet.config.MyWalletConfig;
 import com.mywallet.domain.Role;
 import com.mywallet.domain.User;
 import com.mywallet.repository.UserRepository;
-import com.mywallet.util.ResponseUtil;
 
 @Transactional
 @Service
@@ -34,16 +33,27 @@ public class UserService {
 
 	@Autowired
 	private RoleService roleService;
-	
+
 	public UserService(){
 		logger.info("UserService class Bean is created : ");
 	}
 
 	@PostConstruct
 	public void init(){
+		printIPAddress();
 		createDefaultAdminUser();
 	}
 
+	void printIPAddress(){
+		InetAddress ip;
+		try {
+			ip = InetAddress.getLocalHost();
+			System.out.println("*************************************IP Address***********************************************");
+			logger.info("Current IP address : " + ip.getHostAddress());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+	}
 	void createDefaultAdminUser(){
 
 		Boolean active = myWalletConfig.getActive();
@@ -60,10 +70,10 @@ public class UserService {
 		}
 		User alreadyExist = findByEmail(email.trim());
 		if(alreadyExist != null){
-		    logger.info("Admin user : "+email+" already exist**********8");
+			logger.info("Admin user : "+email+" already exist**********8");
 			return;
 		}
-		
+
 		Role adminRole = roleService.findByRoleName(role.trim());
 		if(adminRole == null){
 			logger.error("RoleName : "+role+" not found admin user not created");
@@ -76,7 +86,7 @@ public class UserService {
 		if(user == null){
 			logger.error("************Default Admin User not created ***************");
 		}
-		
+
 	}
 
 	public User persistUser(User user){
@@ -102,7 +112,6 @@ public class UserService {
 			return null;
 		}
 	}
-
 
 	public User save(User user)throws DataIntegrityViolationException{
 		logger.info("inside create UserDB method :");
@@ -232,4 +241,37 @@ public class UserService {
 		return null;
 	}
 
+	public Map<String,Object> getTotalUsersCount(){
+
+		Map<String,Object> response = new HashMap<String,Object>();
+		response.put("totalUsers", getTotalUserCount());
+		response.put("activeUsers", getTotalActiveUserCount());
+		response.put("merchantUsers", getTotalMerchantCount("merchant"));
+		return response;
+	}
+
+	Integer getTotalUserCount(){
+		try{
+			return userRepository.getTotalUserCount();
+		}catch (Exception e) {
+			logger.error("Exception occur while fetch total users count : ",e);
+			return null;
+		}
+	}
+	Integer getTotalActiveUserCount(){
+		try{
+			return userRepository.getTotalActiveUserCount();
+		}catch (Exception e) {
+			logger.error("Exception occur while fetch total active users count : ",e);
+			return null;
+		}
+	}
+	Integer getTotalMerchantCount(String roleName){
+		try{
+			return userRepository.getTotalMerchantCount(roleName);
+		}catch (Exception e) {
+			logger.error("Exception occur while fetch merchant users count : ",e);
+			return null;
+		}
+	}
 }

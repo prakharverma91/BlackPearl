@@ -33,10 +33,10 @@ public class SwaggerConfig {
 	 */
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("KYC REST API DOCUMENTATION")
-				.description("GUIDE TO KYC USAGE")
+				.title("MY WALLET REST API DOCUMENTATION")
+				.description("GUIDE TO MYWALLET USAGE")
 				.termsOfServiceUrl("http://localhost:8080/terms")
-				.contact("Oodlestechnologies pvt ltd")
+				.contact("black pearl pvt ltd")
 				.license("Apache License Version 20")
 				.licenseUrl("https://github.com/IBM-Bluemix/news-aggregator/blob/master/LICENSE")
 				.version("1.0")

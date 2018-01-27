@@ -15,8 +15,6 @@ public class Req_DocumentMeta {
 	@NotEmpty(message="description can not be empty")
 	public String description;
 	
-	public boolean isMandatory;
-
 	public String getDocumentName() {
 		return documentName;
 	}
@@ -33,13 +31,5 @@ public class Req_DocumentMeta {
 		this.description = description;
 	}
 
-	public boolean isMandatory() {
-		return isMandatory;
-	}
 
-	public void setMandatory(boolean isMandatory) {
-		this.isMandatory = isMandatory;
-	}
-	
-	
 }

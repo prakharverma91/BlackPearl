@@ -18,7 +18,7 @@ import org.springframework.core.annotation.Order;
 /**
  *  SimpleCORSFilter  Enabling Global
  *  CORS Processing   at global level 
-    @author Prashank Jauhari
+    @author Prakhar Verma
 */
 
 @Order(Ordered.HIGHEST_PRECEDENCE)

@@ -74,10 +74,11 @@ private static final Logger logger = LoggerFactory.getLogger(DocumentMetaControl
 			return ResponseUtil.errorResp("description  can not be null : ",HttpStatus.BAD_REQUEST);
 		} 
 		
-		boolean isMandatory = req_DocumentMeta.isMandatory();
-		
-		DocumentMeta documentMeta =new DocumentMeta(documentName, description, isMandatory);
-		documentMetaService.save(documentMeta);
+		DocumentMeta documentMeta =new DocumentMeta(documentName, description);
+		documentMeta = documentMetaService.save(documentMeta);
+		if(documentMeta == null){
+			return ResponseUtil.errorResp("Document Meta Not Created",HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
 		Map<String,Object> map =ObjectMap.objectMap(documentMeta);
 		
@@ -100,9 +101,10 @@ private static final Logger logger = LoggerFactory.getLogger(DocumentMetaControl
 		
 		documentMetaObj.setDocumentName(req_documentMeta.documentName);
 		documentMetaObj.setDescription(req_documentMeta.description);
-		documentMetaObj.setMandatory(req_documentMeta.isMandatory);;
-		documentMetaService.save(documentMetaObj);
-
+		documentMetaObj = documentMetaService.save(documentMetaObj);
+		if(documentMetaObj == null){
+			return ResponseUtil.errorResp("Document Meta Not Updated",HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		Map<String, Object> map=ObjectMap.objectMap(documentMetaObj);
 
 		return ResponseUtil.successResponse("Successfully updated DocumentMeta : ", map, HttpStatus.OK);

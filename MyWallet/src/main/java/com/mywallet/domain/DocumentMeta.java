@@ -20,45 +20,39 @@ public class DocumentMeta {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer documentMetaID; 
-	
-	@Pattern(regexp="[a-zA-Z]+",message="documentName only alphabets")
-	@NotNull(message="documentName can not be null")
-	@NotEmpty(message="documentName can not be empty")
-	@Column(unique=true)
+	private Integer documentMetaID; 
+
+	//	@Pattern(regexp="[a-zA-Z]+",message="documentName only alphabets")
+	//	@NotNull(message="documentName can not be null")
+	//	@NotEmpty(message="documentName can not be empty")
+	//	@Column(unique=true)
 	private String documentName;
 
-	@NotNull(message="description can not be null")
-	@NotEmpty(message="description can not be empty")
+	//	@NotNull(message="description can not be null")
+	//	@NotEmpty(message="description can not be empty")
 	private String description;
-	
-	private boolean isMandatory=false;
-	
-	
+
 	@OneToMany(mappedBy="documentMeta",cascade=CascadeType.ALL)
 	private List<CountryDocMapping> countryDocMappingArray = new ArrayList<CountryDocMapping>();
-	
 
 	public DocumentMeta(){
-		
+
 	}
-	
-	public DocumentMeta( String documentName, String description, boolean isMandatory) {
-		
+
+	public DocumentMeta( String documentName, String description) {
+
 		this.documentName = documentName;
 		this.description = description;
-		this.isMandatory = isMandatory;
 	}
-	
-	
-public DocumentMeta( String documentName, String description, boolean isMandatory,List<CountryDocMapping> countryDocMappingArray) {
-		
+
+
+	public DocumentMeta( String documentName, String description, boolean isMandatory,List<CountryDocMapping> countryDocMappingArray) {
+
 		this.documentName = documentName;
 		this.description = description;
-		this.isMandatory = isMandatory;
 		this.countryDocMappingArray=countryDocMappingArray;
 	}
-	
+
 
 	public List<CountryDocMapping> getCountryDocMappingArray() {
 		return countryDocMappingArray;
@@ -92,18 +86,4 @@ public DocumentMeta( String documentName, String description, boolean isMandator
 		this.description = description;
 	}
 
-	public boolean isMandatory() {
-		return isMandatory;
-	}
-
-	public void setMandatory(boolean isMandatory) {
-		this.isMandatory = isMandatory;
-	}
-
-	@Override
-	public String toString() {
-		return "DocumentMeta [documentMetaID=" + documentMetaID + ", documentName=" + documentName + ", description="
-				+ description + ", isMandatory=" + isMandatory + "]";
-	}
-	
 }

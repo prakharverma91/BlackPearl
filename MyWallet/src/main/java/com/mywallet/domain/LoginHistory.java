@@ -78,7 +78,6 @@ public class LoginHistory implements Comparable<LoginHistory>{
 		
 		@ObjectHash
 		public String loginTime(){
-			System.out.println("show Login Time : "+this.loginTime.toString());
 			return this.loginTime.toString();
 		}
 		

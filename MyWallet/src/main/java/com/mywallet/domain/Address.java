@@ -20,32 +20,32 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer addressId;
 	
-	@NotNull(message="country cannot be null")
-	@NotEmpty(message="country can not be empty")
+	//@NotNull(message="country cannot be null")
+	//@NotEmpty(message="country can not be empty")
 	private String country;
 	
-	@NotNull(message="state cannot be null")
-	@NotEmpty(message="state can not be empty")
+	//@NotNull(message="state cannot be null")
+	//@NotEmpty(message="state can not be empty")
 	private String state;
 	
-	@NotNull(message="city cannot be null")
-	@NotEmpty(message="city can not be empty")
+	//@NotNull(message="city cannot be null")
+	//@NotEmpty(message="city can not be empty")
 	private String city;
 	
 	private String street;
 	
-	@NotNull(message="addressLine cannot be null")
-	@NotEmpty(message="addressLine can not be empty")
+	//@NotNull(message="addressLine cannot be null")
+	//@NotEmpty(message="addressLine can not be empty")
 	private String addressLine;
 	
-	@NotNull(message="pincode cannot be null")
-	@NotEmpty(message="pincode can not be empty")
+	//@NotNull(message="pincode cannot be null")
+	//@NotEmpty(message="pincode can not be empty")
 	private String pincode;
 	
-	@Pattern(regexp="^(0|[1-9][0-9]*)$",message="contactNo is not valid format")
-	@Size(min=9,message="contactNo must be atleast 9 characters !")
-	@NotNull(message="contactNo cannot be null")
-	@NotEmpty(message="contactNo can not be empty")
+	//@Pattern(regexp="^(0|[1-9][0-9]*)$",message="contactNo is not valid format")
+	//@Size(min=9,message="contactNo must be atleast 9 characters !")
+	//@NotNull(message="contactNo cannot be null")
+	//@NotEmpty(message="contactNo can not be empty")
 	private String contactNo;
 	
 	

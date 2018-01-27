@@ -67,8 +67,10 @@ private static final Logger logger = LoggerFactory.getLogger(DocumentTypeControl
 		
 		
 		DocumentType documentTypeObj =new DocumentType(documentType);
-		documentTypeService.save(documentTypeObj);
-		
+		documentTypeObj = documentTypeService.save(documentTypeObj);
+		if(documentTypeObj == null){
+			return ResponseUtil.errorResp("Document Type Not Created",HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		Map<String,Object> map =ObjectMap.objectMap(documentTypeObj);
 		
 		return ResponseUtil.successResponse("Successfully post documentType : ",map,HttpStatus.OK);
@@ -92,8 +94,10 @@ private static final Logger logger = LoggerFactory.getLogger(DocumentTypeControl
 		
 		documentTypeObj.setDocumentType(req_DocumentType.getDocumentType());
 		
-		documentTypeService.save(documentTypeObj);
-
+		documentTypeObj = documentTypeService.save(documentTypeObj);
+		if(documentTypeObj == null){
+			return ResponseUtil.errorResp("Document Type Not Updated",HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		Map<String, Object> map=ObjectMap.objectMap(documentTypeObj);
 
 		return ResponseUtil.successResponse("Successfully updated DocumentType : ", map, HttpStatus.OK);
@@ -105,12 +109,10 @@ private static final Logger logger = LoggerFactory.getLogger(DocumentTypeControl
 
 		Boolean deleteID = false;
 		deleteID = documentTypeService.deleteByDocumentTypeID(documentTypeId);
-		System.out.println("kkkk"+deleteID);
 		if(!deleteID){
 			
 			return ResponseUtil.errorResp("No documentType object is deleted from database : "+deleteID, HttpStatus.NOT_FOUND);
 		}
-	    System.out.println("afttttttttttttttttt"); 
 		return ResponseUtil.successResponse("Successfully documentType object deleted from database : ",deleteID,HttpStatus.OK);
 
 	}	
