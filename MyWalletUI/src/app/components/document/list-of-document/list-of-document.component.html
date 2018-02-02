@@ -1,0 +1,68 @@
+<div class="role">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Document Type
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="ui-widget-header datatable-search col-md-6">
+                            <input #search type="text" class="block" pInputText size="50" placeholder="Search">
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn theme-btn right" (click)="open(addKyctype)">Add Document Type</button>
+                        </div>
+                    </div>
+                    <p-dataTable [value]="documentTypeArray" [globalFilter]="search" [rows]="this.numberOfPage" [paginator]="true" [responsive]="true">
+                        <p-column field="documentTypeID" header="DocumentType ID" [sortable]="true"></p-column>
+                        <p-column field="documentType" header="Document Type" [sortable]="true"></p-column>
+
+                        <p-column field="action" header="Action" [sortable]="true">
+                            <ng-template pTemplate="body" let-data="rowData">
+                                <div class="document-icns">
+                                    <!--<i class="fa fa-eye" (click)="open(viewUserDetails)" placement="top" ngbTooltip="View details"></i>-->
+                                    <i class="fa fa-edit" (click)="open(addKyctype, data)" placement="top" ngbTooltip="Edit Kyc Document Type"></i>
+                                </div>
+                            </ng-template>
+                        </p-column>
+                    </p-dataTable>
+                    <ng-template #addKyctype let-c="close" let-d="dismiss">
+                        <div class="modal-header">
+                            <h6 *ngIf="!isNew" class="modal-title text-uppercase">Edit Document Type </h6>
+                            <h6 *ngIf="isNew" class="modal-title text-uppercase"> Add Document Type</h6>
+                            <button type="button" class="close" aria-label="Close" (click)="c()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form #addKyctype="ngForm">
+                                <fieldset class="form-group" [ngClass]="{'has-danger':(documentType.invalid && documentType.touched && isFormSubmitted == true) ||	(documentType.touched && documentType.pristine && isFormSubmitted == true) ||	(addDocumentType.submitted && documentType.invalid && isFormSubmitted == true)}">
+                                    <span class="ui-cell-data">Document Type Name</span>
+                                    <input type="text" class="form-control" name="documentType" #documentType="ngModel" [(ngModel)]="documentTypeObj.documentType" placeholder="Enter document Type Name" minlength="2" maxlength="100" pattern="[a-zA-Z]+([\s][a-zA-Z]+)*" (keyup)="checkMaxLength(100, documentTypeObj.documentType, 'documentType')" required/>                                    
+                                    <div *ngIf="(documentType.errors && (isFormSubmitted == true || (documentType.dirty || documentType.touched)))" class="error">
+                                        <div *ngIf="documentType.errors.required && !documentType.errors.minlength && !documentType.errors.pattern && !documentType.errors.maxlength">
+                                            Document type is required.
+                                        </div>
+                                        <div *ngIf="!(documentType.errors && (isFormSubmitted == true || (documentType.dirty || documentType.touched))) && fieldErrors.name" class="error"></div>
+                                        <div *ngIf="documentType.errors.minlength && !documentType.errors.required"> Document name should be atleast 2 character long.</div>
+                                        <div *ngIf="documentType.errors.pattern && !documentType.errors.minlength">only alphabet and single space are allowed </div>
+                                    </div>
+                                    <div *ngIf="!documentType?.errors?.minlength && !documentType?.errors?.pattern && !documentType?.errors?.required && fieldErrors.documentType" class="error">
+                                        Document Type cannot be more than 100 characters.
+                                    </div>
+                                 </fieldset>
+
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button *ngIf="isNew" type="button" class="btn theme-btn" (click)="addDocumentType(documentTypeObj,addKyctype,c)">Submit</button>
+                            <button *ngIf="!isNew" type="button" class="btn theme-btn" (click)="editKycDocumentType(documentTypeObj,addKyctype);c()">Submit</button>
+                            <button type="button" class="btn btn-secondary" (click)="c()">Close</button>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>

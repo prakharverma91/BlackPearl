@@ -1,0 +1,92 @@
+<div class="role">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					Action
+				</div>
+				<div class="card-block">
+					<div class="row">
+						<div class="ui-widget-header datatable-search col-md-6">
+							<input #search type="text" class="block" pInputText size="50" placeholder="Search">
+						</div>
+					</div>
+					<p-dataTable *ngIf="this.isTblLoadingDone == true" [value] ="actionArray" [globalFilter]="search" [rows]="this.numberOfPage" [paginator]="true" [responsive]="true" >
+								<p-column field="actionId" header="Action Id" [sortable]="true"></p-column>
+								<p-column field="actionName" header="Action Name" [sortable]="true"></p-column>
+								<p-column field="active" header="Status" [sortable]="true">
+							<!-- <ng-template *ngFor="let data of activityData" let-data="rowData" pTemplate="body">
+								<div class="status" [ngClass]="{'completed': data.status === 'Activate', 'rejected': data.status === 'Deactivate'}">{{data.status}}</div>
+							</ng-template> -->
+							<ng-template let-data="rowData" pTemplate="body">
+									<div class="status" [ngClass]="{'activated': data.active == true, 'deactivated': data.active != true}">{{data.active == true ? 'Activated' : 'Deactivated' }}
+									</div>								
+									</ng-template>
+						</p-column>
+						<!--<p-column field="action" header="Action" [sortable]="true">
+								<ng-template pTemplate="body">
+									<div class="document-icns">
+										<i class="fa fa-eye" (click)="open(viewActivity)" placement="top" ngbTooltip="View activity"></i>
+										<i class="fa fa-edit" (click)="open(editActivity)" placement="top" ngbTooltip="Edit activity"></i>
+									</div>
+								</ng-template>
+							</p-column>-->
+					</p-dataTable>
+					<ng-template #viewActivity let-c="close" let-d="dismiss">
+						<div class="modal-header">
+						<h6 class="modal-title text-uppercase"  >Action Name</h6>
+						<button type="button" class="close" aria-label="Close" (click)="c()">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+					  <div class="modal-body">
+								<table>
+										<thead>
+										<tr>
+								 <th>Action Name</th>
+								 </tr>
+									</thead>
+								 <tbody>
+										 <!-- <td>{{viewData.roleName}}</td>		 -->
+							 </tbody>
+								</table>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-secondary" (click)="c()">Close</button>
+					  </div>
+					</ng-template>
+					<ng-template #editActivity let-c="close" let-d="dismiss">
+					  <div class="modal-header">
+						<h6 class="modal-title text-uppercase">Edit Action</h6>
+						<button type="button" class="close" aria-label="Close" (click)="c()">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+						<div class="modal-body">
+							<form>
+								<fieldset class="form-group">
+									<span class="ui-cell-data">Action Name</span>
+									<input type="text" class="form-control" name="roleName" minlength="5" maxlength="100" required />
+								</fieldset>
+								<fieldset class="form-group">
+									<span class="ui-cell-data">Action Description</span>
+									<input type="text" class="form-control" name="roleDescription"  minlength="5" maxlength="100" required/>
+								</fieldset>
+								<fieldset class="form-group">
+									<span class="ui-cell-data">Status:</span>
+									<label class="form-check-label">
+											<input class="form-check-input" type="checkbox" name="active"> Active	
+										</label>
+								</fieldset>
+							</form>
+						</div>
+					  <div class="modal-footer">
+						<button type="button" class="btn theme-btn" (click)="c()">Submit</button>
+						<button type="button" class="btn btn-secondary" (click)="c()">Close</button>
+					  </div>
+					</ng-template>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

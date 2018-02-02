@@ -1,0 +1,26 @@
+<div class="container-fluid header-part">
+	<div class="row">
+		<div class="col-md-3 col-sm-3 col-6">
+			<h2 class="logo">MyWallet</h2>
+		</div>
+		<div class="col-md-9 col-sm-9 col-6">
+			<nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
+				<button type="button" class="navbar-toggler navbar-toggler-right mobile-toggle" (click)="toggleResponsiveNav()">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="right-nav" [ngClass]="{'block': toggleMenu}">
+					<ul>
+						<!-- <li>Videos</li>
+						<li>Resources</li>
+						<li>Merchant</li>
+						<li>Contact</li> -->
+						<li [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Log In</li>
+						<li [routerLink]="['/signup']" routerLinkActive="active">Registration</li>
+						<li [routerLink]="['/welcome']" routerLinkActive="active">Welcome</li>
+						
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</div>
+</div>

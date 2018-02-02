@@ -1,0 +1,21 @@
+  <app-header></app-header>
+  <div class="clearfix"></div>
+  <div class="authentication-loader" *ngIf="isAuthenticateSpinner">
+		<div class="loader09"></div>
+  </div>
+   <div class="autinticate-main" *ngIf="!isAuthenticateSpinner">
+	  <div class="email-verfication">
+		<img *ngIf="isSuccess == true" src="assets/images/right-icon.png"/>
+		<i *ngIf="isSuccess == false" class="fa fa-trash"></i>
+		<h3 *ngIf="isSuccess == true">Thank You</h3>
+		<h3 *ngIf="isSuccess == false">Oops!</h3>
+		<p *ngIf="isSuccess == true">Your email has been {{emailMessage}}.<br> Continue to Login</p>
+		<p *ngIf="isSuccess == false">
+			<!-- Your email has been not verified. -->
+			<!--Token is expired. Please register again. ThankYou-->
+				  <!--todo-->
+					 {{emailMessage}}
+			</p>
+		<button class="btn theme-btn" *ngIf="isSuccess == true" [routerLink]="['/']">Login</button>
+	  </div>
+	</div>

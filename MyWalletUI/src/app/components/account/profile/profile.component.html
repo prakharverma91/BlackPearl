@@ -1,0 +1,429 @@
+<div class="clearfix"></div>
+<div class="authentication-loader" *ngIf="isAuthenticateSpinner">
+      <div class="loader09"></div>
+</div>
+<div class="row">
+      <div class="col-md-4">
+            <app-profilepic></app-profilepic>
+            <div class="card">
+                  <div class="card-block">
+                        <div class="verify-text">
+                              <div class="custom-progress not-verified"></div>
+                              <h5>Not Verified</h5>
+                              <p>You have not yet submitted details and documents</p>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <div class="col-sm-12 col-md-8">
+            <div class="card">
+                  <div class="card-header">
+                        {{(isEdited ? 'Update Profile' : 'Profile')}}
+                  </div>
+                  <div *ngIf="!isEdited" class="profile-edit-btn">
+                        <i class="fa fa-pencil" (click)="edit()"></i> Edit</div>
+                  <div *ngIf="!isEdited" class="add-new-address">
+                        <i class="fa fa-address-book" (click)="open(addAddress)"></i> Add New Address</div>
+                  <div class="card-block row">
+                        <div class="col-md-12" *ngIf="!isEdited">
+                              <div class="row" style="padding: 0 6%">
+                                    <div class="col-md-6">
+                                          <label>Name :</label>
+                                          <label>{{data.userName}}</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                          <label>Email :</label>
+                                          <label>{{data.email}}</label>
+                                    </div>
+                              </div>
+                              <div *ngIf="!addressArray.length == 0" class="row">
+                                    <div class="col-md-12">
+                                          <div class="container">
+                                                <div ng2-carouselamos [width]="500" [items]="addressArray" [$item]="itemTemplate" [$prev]="prevTemplate" [$next]="nextTemplate"
+                                                      (onSelectedItem)="selectedItem = $event.item; selectedIdx = $event.index"
+                                                      class="wrapper">
+                                                </div>
+                                                <!-- <div class="selected-item" *ngIf="selectedItem">
+                                                        <b>Selected Item</b>
+                                                         <div class="selected-item-data">
+                                                             <img [src]="selectedItem.img" width="200" height="200" alt="placeholder" />
+                                                              <span>{{selectedItem.name}}</span>
+                                                               <br>
+                                                         </div>
+                                                </div> -->
+                                          </div>
+                                          <ng-template #prevTemplate>
+                                                <img *ngIf="isPerviousShow()" src="assets/images/arrowadd.png" width="30" height="30" />
+                                          </ng-template>
+                                          <ng-template #nextTemplate>
+                                                <img *ngIf="isNextShow()" src="assets/images/arrowadd.png" width="30" height="30" style="transform: rotate(180deg)" />
+                                          </ng-template>
+                                          <ng-template let-item let-i="index" let-selectedIndex="selectedIndex" #itemTemplate>
+                                                <div class="item" [ngStyle]="{ backgroundColor: item.bgColor }">
+                                                      <div class="col-md-12">
+                                                            <!-- <img [src]="item.img" width="200" height="200" alt="placeholder" /> -->
+                                                            <div class="row">
+                                                                  <div class="col-md-6">
+                                                                        <label>Address Line :</label>
+                                                                        <label>{{item.addressLine == null ? '-' : item.addressLine}}</label>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                  <div class="col-md-6">
+                                                                        <label>Street :</label>
+                                                                        <label>{{item.street == null ? '-' : item.street}}</label>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                  <div class="col-md-6">
+                                                                        <label>City :</label>
+                                                                        <label>{{item.city == null ? '-' : item.city}}</label>
+                                                                  </div>
+                                                                  <div class="col-md-6">
+                                                                        <label>State :</label>
+                                                                        <label>{{item.state == null ? '-' : item.state}}</label>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                  <div class="col-md-6">
+                                                                        <label>Pincode :</label>
+                                                                        <label>{{item.pincode == null ? '-' : item.pincode}}</label>
+                                                                  </div>
+                                                                  <div class="col-md-6">
+                                                                        <label>Contact No :</label>
+                                                                        <label>{{item.contactNo == null ? '-':item.contactNo }}</label>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                  <div class="col-md-6">
+                                                                        <label>Country :</label>
+                                                                        <label>{{item.country == null ? '-':item.country }}</label>
+                                                                  </div>
+                                                            </div>
+                                                            <br>
+                                                            <span [ngStyle]="{ 'margin-left':'40%','font-size': '13px','color': '#565656'}">Address {{(selectedIndex+1)}}</span>
+
+                                                      </div>
+                                                </div>
+                                          </ng-template>
+                                    </div>
+                              </div>
+                        </div>
+                        <div *ngIf="isEdited">
+                              <form #updateProfile="ngForm">
+                                    <div class="row">
+                                          <div class="col-md-6">
+                                                <div class="user-info">
+                                                      <fieldset class="form-group" [ngClass]="{'has-danger':(name.invalid && name.touched && isFormSubmitted == true ) ||(name.touched && name.pristine && isFormSubmitted == true)||(upload.submitted && name.invalid && isFormSubmitted == true)}">
+                                                            <label>Name:</label>
+                                                            <input type="text" class="form-control" name="name" #name="ngModel" [(ngModel)]="data.userName" minlength="5" maxlength="100"
+                                                                  (keyup)="checkMaxLength(100, data.userName, 'name')" pattern="(^(?=.{5,100}$)(?!.* {2,})[a-zA-Z][a-zA-Z ]*[a-zA-Z]$)"
+                                                                  required/>
+                                                            <div *ngIf="(name.errors && (isFormSubmitted == true || (name.dirty || name.touched)))" class="error">
+                                                                  <div *ngIf="name.errors.required && !name.errors.minlength && !name.errors.pattern && !name.errors.maxlength">Name is required.</div>
+                                                                  <div *ngIf="name.errors.minlength && !name.errors.required">Name should be atleast 5 character long.</div>
+                                                                  <div *ngIf="name.errors.pattern && !name.errors.minlength">only alphabets and single space is allowed.</div>
+                                                            </div>
+                                                            <div *ngIf="!name?.errors?.minlength && !name?.errors?.pattern && !name?.errors?.required && fieldErrors.name" class="error">
+                                                                  Name cannot be more than 100 characters.
+                                                            </div>
+                                                      </fieldset>
+                                                </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                                <div class="user-info">
+                                                      <label>Email:</label>
+                                                      <label>{{data.email}}</label>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="col-md-12">
+                                                <div class="user-info">
+                                                      <fieldset class="form-group" [ngClass]="{'has-danger':(add1.invalid && add1.touched && isFormSubmitted == true ) ||(add1.touched && add1.pristine && isFormSubmitted == true)||(upload.submitted && add1.invalid && isFormSubmitted == true)}">
+                                                            <label>Address Line :</label>
+                                                            <input type="text" class="form-control" name="add1" #add1="ngModel" [(ngModel)]="selectedItem.addressLine" minlength="5"
+                                                                  maxlength="100" (keyup)="checkMaxLength(100, selectedItem.addressLine, 'add1')"
+                                                                  required/>
+                                                            <div *ngIf="(add1.errors && (isFormSubmitted == true || (add1.dirty || add1.touched)))" class="error">
+                                                                  <div *ngIf="add1.errors.required && !add1.errors.minlength && !add1.errors.pattern && !add1.errors.maxlength">Address Line1 is required.</div>
+                                                                  <div *ngIf="add1.errors.minlength && !add1.errors.required">Address should be atleast 5 character long.</div>
+                                                            </div>
+                                                            <div *ngIf="!add1?.errors?.minlength && !add1?.errors?.pattern && !add1?.errors?.required && fieldErrors.add1" class="error">
+                                                                  Address cannot be more than 100 characters.
+                                                            </div>
+                                                      </fieldset>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="col-md-12">
+                                                <div class="user-info">
+                                                      <fieldset class="form-group" [ngClass]="{'has-danger':(street.invalid && street.touched && isFormSubmitted == true ) ||(street.touched && street.pristine && isFormSubmitted == true)||(upload.submitted && street.invalid && isFormSubmitted == true)}">
+                                                            <label>Street :</label>
+                                                            <input type="text" class="form-control" name="street" #street="ngModel" [(ngModel)]="selectedItem.street" minlength="5" maxlength="100"
+                                                                  (keyup)="checkMaxLength(100, selectedItem.street, 'street')"
+                                                                  required/>
+                                                            <div *ngIf="(street.errors && (isFormSubmitted == true || (street.dirty || street.touched)))" class="error">
+                                                                  <div *ngIf="street.errors.required && !street.errors.minlength && !street.errors.pattern && !street.errors.maxlength">Address Line1 is required.</div>
+                                                                  <div *ngIf="street.errors.minlength && !street.errors.required">Street should be atleast 5 character long.</div>
+                                                            </div>
+                                                            <div *ngIf="!street?.errors?.minlength && !street?.errors?.pattern && !street?.errors?.required && fieldErrors.street" class="error">
+                                                                  Address cannot be more than 100 characters.
+                                                            </div>
+                                                      </fieldset>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="col-md-6">
+                                                <div class="user-info">
+                                                      <fieldset class="form-group" [ngClass]="{'has-danger':(city.invalid && city.touched && isFormSubmitted == true ) ||(city.touched && city.pristine && isFormSubmitted == true)||(upload.submitted && city.invalid && isFormSubmitted == true)}">
+                                                            <label>City:</label>
+                                                            <input type="text" class="form-control" name="city" #city="ngModel" [(ngModel)]="selectedItem.city" minlength="3" maxlength="20"
+                                                                  (keyup)="checkMaxLength(20, selectedItem.city, 'city')" pattern="[a-zA-Z]+([\s][a-zA-Z]+)*"
+                                                                  required/>
+                                                            <div *ngIf="(city.errors && (isFormSubmitted == true || (city.dirty || city.touched)))" class="error">
+                                                                  <div *ngIf="city.errors.required && !city.errors.minlength && !city.errors.pattern && !city.errors.maxlength">City is required.</div>
+                                                                  <div *ngIf="city.errors.minlength && !city.errors.required">City should be atleast 3 character.</div>
+                                                                  <div *ngIf="city.errors.pattern && !city.errors.minlength">only alphabets are allowed.</div>
+                                                            </div>
+                                                            <div *ngIf="!city?.errors?.minlength && !city?.errors?.pattern && !city?.errors?.required && fieldErrors.city" class="error">
+                                                                  City cannot be more than 20 characters.
+                                                            </div>
+                                                      </fieldset>
+                                                </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                                <fieldset class="form-group" [ngClass]="{'has-danger':(state.invalid && state.touched && isFormSubmitted == true ) ||(state.touched && state.pristine && isFormSubmitted == true)||(upload.submitted && state.invalid && isFormSubmitted == true)}">
+                                                      <label>State:</label>
+                                                      <input type="text" class="form-control" name="state" #state="ngModel" [(ngModel)]="selectedItem.state" minlength="3" maxlength="20"
+                                                            (keyup)="checkMaxLength(20, selectedItem.state, 'state')" pattern="[a-zA-Z]+([\s][a-zA-Z]+)*"
+                                                            required/>
+                                                      <div *ngIf="(state.errors &&  (state.dirty || state.touched))" class="error">
+                                                            <div *ngIf="state.errors.required && !state.errors.minlength && !state.errors.pattern && !state.errors.maxlength">State is required.</div>
+                                                            <div *ngIf="state.errors.minlength && !state.errors.required">State should be atleast 3 character long.</div>
+                                                            <div *ngIf="state.errors.pattern && !state.errors.minlength">only alphabets are allowed.</div>
+                                                      </div>
+                                                      <div *ngIf="!state?.errors?.minlength && !state?.errors?.pattern && !state?.errors?.required && fieldErrors.state" class="error">
+                                                            State cannot be more than 20 characters.
+                                                      </div>
+                                                </fieldset>
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="col-md-6">
+                                                <div class="user-info">
+                                                      <fieldset class="form-group" [ngClass]="{'has-danger':(pincode.invalid && pincode.touched && isFormSubmitted == true ) ||(pincode.touched && pincode.pristine && isFormSubmitted == true)||(upload.submitted && pincode.invalid && isFormSubmitted == true)}">
+                                                            <label>Pincode:</label>
+                                                            <input type="text" class="form-control" name="pincode" #pincode="ngModel" [(ngModel)]="selectedItem.pincode" minlength="5"
+                                                                  maxlength="15" (keyup)="checkMaxLength(15, selectedItem.pincode, 'pincode')"
+                                                                  pattern="^[a-zA-Z0-9._-]+$" required/>
+                                                            <div *ngIf="(pincode.errors && (isFormSubmitted == true || (pincode.dirty || pincode.touched)))" class="error">
+                                                                  <div *ngIf="pincode.errors.required && !pincode.errors.minlength && !pincode.errors.pattern && !pincode.errors.maxlength">Pincode is required.</div>
+                                                                  <div *ngIf="pincode.errors.pattern">only alphabets and numbers are allowed.</div>
+                                                            </div>
+                                                            <div *ngIf="!pincode?.errors?.minlength && !pincode?.errors?.pattern && !pincode?.errors?.required && fieldErrors.pincode"
+                                                                  class="error">
+                                                                  Pincode no. cannot be more than 15 characters.
+                                                            </div>
+                                                      </fieldset>
+                                                </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                                <div class="user-info">
+                                                      <fieldset class="form-group" [ngClass]="{'has-danger':(phone.invalid && phone.touched && isFormSubmitted == true ) ||(phone.touched && phone.pristine && isFormSubmitted == true)||(upload.submitted && phone.invalid && isFormSubmitted == true)}">
+                                                            <label>Phone no.:</label>
+                                                            <input type="tel" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="selectedItem.contactNo" minlength="4" maxlength="10"
+                                                                  (keyup)="checkMaxLength(10, selectedItem.contactNo, 'phone')"
+                                                                  pattern="[0-9]*" required/>
+                                                            <div *ngIf="(phone.errors && (isFormSubmitted == true || (phone.dirty || phone.touched)))" class="error">
+                                                                  <div *ngIf="phone.errors.required && !phone.errors.minlength && !phone.errors.pattern && !phone.errors.maxlength">Phone no. is required.</div>
+                                                                  <div *ngIf="phone.errors.minlength && !phone.errors.required">phone no. should be atleast 4 character long.</div>
+                                                                  <div *ngIf="phone.errors.pattern && !phone.errors.minlength">only numbers are allowed.</div>
+                                                            </div>
+                                                            <div *ngIf="!phone?.errors?.minlength && !phone?.errors?.pattern && !phone?.errors?.required && fieldErrors.phone" class="error">
+                                                                  phone no. cannot be more than 10 characters.
+                                                            </div>
+                                                      </fieldset>
+                                                </div>
+                                          </div>
+
+                                    </div>
+                                    <div class="row">
+                                          <div class="col-md-12">
+                                                <div class="user-info">
+                                                      <label>Country:</label>
+                                                      <select [(ngModel)]="selectedItem.country" name="country">
+                                                            <!-- <option disabled [ngValue]="undefined">Select country</option> -->
+                                                            <option disabled [ngValue]="selectedItem.country">{{selectedItem.country}}</option>
+                                                            <option *ngFor="let country of countryArray" [ngValue]="country.name">{{country.name}}</option>
+                                                      </select>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </form>
+                              <button class="btn theme-btn mb15 right" (click)="upload(data,selectedItem,updateProfile)">Submit</button>
+                              <button class="btn theme-btn mb15 right right-margin" (click)="reloadProfile()">Cancel</button>
+                        </div>
+                  </div>
+            </div>
+      </div>
+      <div class="card">
+            <div class="card-header">
+                  Previous Logins
+            </div>
+            <div class="card-block row">
+                  <div class="datatable-scroll">
+                        <p-dataTable [value]="loginHistoryData" [rows]="this.numberOfPage" [paginator]="true" [responsive]="true">
+                              <p-column [style]="{'width':'5%'}" field="sno" header="S.no" [sortable]="true">
+                                    <ng-template let-i="rowIndex" let-data="rowData" pTemplate="body">
+                                          {{i+1}}
+                                    </ng-template>
+                              </p-column>
+                              <p-column [style]="{'width':'20%'}" field="loginTime" header="Login Time" [sortable]="true"></p-column>
+                              <p-column [style]="{'width':'20%'}" field="loginIP" header="Login IP" [sortable]="true"></p-column>
+                              <p-column field="userAgent" header="User Agent" [sortable]="true"></p-column>
+                        </p-dataTable>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<ng-template #addAddress let-c="close" let-d="dismiss">
+      <form #addAddress="ngForm">
+            <div class="modal-header">
+                  <h6 class="modal-title text-uppercase">Add Address</h6>
+                  <button type="button" class="close" aria-label="Close" (click)="c()">
+                        <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <div class="modal-body">
+                  <div class="row">
+                        <div class="col-md-12">
+                              <div class="user-info">
+                                    <fieldset class="form-group" [ngClass]="{'has-danger':(add1.invalid && add1.touched && isFormSubmitted == true ) ||(add1.touched && add1.pristine && isFormSubmitted == true)||(addAddress.submitted && add1.invalid && isFormSubmitted == true)}">
+                                          <label>Address Line :</label>
+                                          <input type="text" class="form-control" name="add1" #add1="ngModel" [(ngModel)]="newAddress.addressLine" minlength="5" maxlength="100"
+                                                (keyup)="checkMaxLength(100, newAddress.addressLine, 'add1')" required/>
+                                          <div *ngIf="(add1.errors && (isFormSubmitted == true || (add1.dirty || add1.touched)))" class="error">
+                                                <div *ngIf="add1.errors.required && !add1.errors.minlength && !add1.errors.pattern && !add1.errors.maxlength">Address Line1 is required.</div>
+                                                <div *ngIf="add1.errors.minlength && !add1.errors.required">Address should be atleast 5 character long.</div>
+                                          </div>
+                                          <div *ngIf="!add1?.errors?.minlength && !add1?.errors?.pattern && !add1?.errors?.required && fieldErrors.add1" class="error">
+                                                Address cannot be more than 100 characters.
+                                          </div>
+                                    </fieldset>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="row">
+                        <div class="col-md-12">
+                              <div class="user-info">
+                                    <fieldset class="form-group" [ngClass]="{'has-danger':(street.invalid && street.touched && isFormSubmitted == true ) ||(street.touched && street.pristine && isFormSubmitted == true)||(addAddress.submitted && street.invalid && isFormSubmitted == true)}">
+                                          <label>Street :</label>
+                                          <input type="text" class="form-control" name="street" #street="ngModel" [(ngModel)]="newAddress.street" minlength="5" maxlength="100"
+                                                (keyup)="checkMaxLength(100, newAddress.street, 'street')" required/>
+                                          <div *ngIf="(street.errors && (isFormSubmitted == true || (street.dirty || street.touched)))" class="error">
+                                                <div *ngIf="street.errors.required && !street.errors.minlength && !street.errors.pattern && !street.errors.maxlength">Address Line1 is required.</div>
+                                                <div *ngIf="street.errors.minlength && !street.errors.required">Street should be atleast 5 character long.</div>
+                                          </div>
+                                          <div *ngIf="!street?.errors?.minlength && !street?.errors?.pattern && !street?.errors?.required && fieldErrors.street" class="error">
+                                                Address cannot be more than 100 characters.
+                                          </div>
+                                    </fieldset>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="row">
+                        <div class="col-md-6">
+                              <div class="user-info">
+                                    <fieldset class="form-group" [ngClass]="{'has-danger':(city.invalid && city.touched && isFormSubmitted == true ) ||(city.touched && city.pristine && isFormSubmitted == true)||(addAddress.submitted && city.invalid && isFormSubmitted == true)}">
+                                          <label>City:</label>
+                                          <input type="text" class="form-control" name="city" #city="ngModel" [(ngModel)]="newAddress.city" minlength="3" maxlength="20"
+                                                (keyup)="checkMaxLength(20, newAddress.city, 'city')" pattern="[a-zA-Z]+([\s][a-zA-Z]+)*"
+                                                required/>
+                                          <div *ngIf="(city.errors && (isFormSubmitted == true || (city.dirty || city.touched)))" class="error">
+                                                <div *ngIf="city.errors.required && !city.errors.minlength && !city.errors.pattern && !city.errors.maxlength">City is required.</div>
+                                                <div *ngIf="city.errors.minlength && !city.errors.required">City should be atleast 3 character.</div>
+                                                <div *ngIf="city.errors.pattern && !city.errors.minlength">only alphabets are allowed.</div>
+                                          </div>
+                                          <div *ngIf="!city?.errors?.minlength && !city?.errors?.pattern && !city?.errors?.required && fieldErrors.city" class="error">
+                                                City cannot be more than 20 characters.
+                                          </div>
+                                    </fieldset>
+                              </div>
+                        </div>
+                        <div class="col-md-6">
+                              <fieldset class="form-group" [ngClass]="{'has-danger':(state.invalid && state.touched && isFormSubmitted == true ) ||(state.touched && state.pristine && isFormSubmitted == true)||(addAddress.submitted && state.invalid && isFormSubmitted == true)}">
+                                    <label>State:</label>
+                                    <input type="text" class="form-control" name="state" #state="ngModel" [(ngModel)]="newAddress.state" minlength="3" maxlength="20"
+                                          (keyup)="checkMaxLength(20, newAddress.state, 'state')" pattern="[a-zA-Z]+([\s][a-zA-Z]+)*"
+                                          required/>
+                                    <div *ngIf="(state.errors &&  (state.dirty || state.touched))" class="error">
+                                          <div *ngIf="state.errors.required && !state.errors.minlength && !state.errors.pattern && !state.errors.maxlength">State is required.</div>
+                                          <div *ngIf="state.errors.minlength && !state.errors.required">State should be atleast 3 character long.</div>
+                                          <div *ngIf="state.errors.pattern && !state.errors.minlength">only alphabets are allowed.</div>
+                                    </div>
+                                    <div *ngIf="!state?.errors?.minlength && !state?.errors?.pattern && !state?.errors?.required && fieldErrors.state" class="error">
+                                          State cannot be more than 20 characters.
+                                    </div>
+                              </fieldset>
+                        </div>
+                  </div>
+                  <div class="row">
+                        <div class="col-md-6">
+                              <div class="user-info">
+                                    <fieldset class="form-group" [ngClass]="{'has-danger':(pincode.invalid && pincode.touched && isFormSubmitted == true ) ||(pincode.touched && pincode.pristine && isFormSubmitted == true)||(addAddress.submitted && pincode.invalid && isFormSubmitted == true)}">
+                                          <label>Pincode:</label>
+                                          <input type="text" class="form-control" name="pincode" #pincode="ngModel" [(ngModel)]="newAddress.pincode" minlength="5"
+                                                maxlength="15" (keyup)="checkMaxLength(15, newAddress.pincode, 'pincode')" pattern="^[a-zA-Z0-9._-]+$"
+                                                required/>
+                                          <div *ngIf="(pincode.errors && (isFormSubmitted == true || (pincode.dirty || pincode.touched)))" class="error">
+                                                <div *ngIf="pincode.errors.required && !pincode.errors.minlength && !pincode.errors.pattern && !pincode.errors.maxlength">Pincode is required.</div>
+                                                <div *ngIf="pincode.errors.pattern">only alphabets and numbers are allowed.</div>
+                                          </div>
+                                          <div *ngIf="!pincode?.errors?.minlength && !pincode?.errors?.pattern && !pincode?.errors?.required && fieldErrors.pincode"
+                                                class="error">
+                                                Pincode no. cannot be more than 15 characters.
+                                          </div>
+                                    </fieldset>
+                              </div>
+                        </div>
+                        <div class="col-md-6">
+                              <div class="user-info">
+                                    <fieldset class="form-group" [ngClass]="{'has-danger':(phone.invalid && phone.touched && isFormSubmitted == true ) ||(phone.touched && phone.pristine && isFormSubmitted == true)||(addAddress.submitted && phone.invalid && isFormSubmitted == true)}">
+                                          <label>Phone no.:</label>
+                                          <input type="tel" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="newAddress.contactNo" minlength="4" maxlength="10"
+                                                (keyup)="checkMaxLength(10, newAddress.contactNo, 'phone')" pattern="[0-9]*" required/>
+                                          <div *ngIf="(phone.errors && (isFormSubmitted == true || (phone.dirty || phone.touched)))" class="error">
+                                                <div *ngIf="phone.errors.required && !phone.errors.minlength && !phone.errors.pattern && !phone.errors.maxlength">Phone no. is required.</div>
+                                                <div *ngIf="phone.errors.minlength && !phone.errors.required">phone no. should be atleast 4 character long.</div>
+                                                <div *ngIf="phone.errors.pattern && !phone.errors.minlength">only numbers are allowed.</div>
+                                          </div>
+                                          <div *ngIf="!phone?.errors?.minlength && !phone?.errors?.pattern && !phone?.errors?.required && fieldErrors.phone" class="error">
+                                                phone no. cannot be more than 10 characters.
+                                          </div>
+                                    </fieldset>
+                              </div>
+                        </div>
+
+                  </div>
+                  <div class="row">
+                        <div class="col-md-12">
+                              <div class="user-info">
+                                    <label>Country:</label>
+                                    <select [(ngModel)]="newAddress.country" name="country">
+                                          <option disabled [ngValue]="undefined">Select country</option>
+                                          <option *ngFor="let country of countryArray" [ngValue]="country.name">{{country.name}}</option>
+                                    </select>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <div class="modal-footer">
+                  <button type="submit" class="btn theme-btn" (click)="addNewAddress(addAddress, c)">Submit</button>
+                  <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+            </div>
+      </form>
+</ng-template>

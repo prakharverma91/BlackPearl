@@ -1,0 +1,26 @@
+<div class="card no-bg">
+  <div class="card-block text-center rounded" style="background-image: url('assets/images/unsplash/2.jpg')">
+	<div class="profile-img">
+		<img *ngIf="uploaded" [src]="getImageUrlForHosting(imgurl)"accept="image/*"  class="img-circle"  />
+		<img *ngIf="!uploaded" src="assets/images/default_pic.png" class="pro-img">
+     <!--<input type="file" #myInput type="file" accept="image/*" name="myfile" (change)="fileChange($event, pic.uploadfile)"  [(ngModel)]="pic.uploadfile"  #uploadfile="ngModel"/>-->
+		 <input type="file" #myInput type="file" accept="image/*" name="myfile" (change)="fileChange($event, pic.uploadfile)" [(ngModel)]="pic.uploadfile" #uploadfile="ngModel"
+                        />
+		<!--<img alt="" class="avatar-lg rounded-circle d-block mx-auto mb-3" src="assets/images/face4.jpg"/>-->
+		<div class="mask"> <span class="fa fa-upload"></span> </div>
+	</div>
+	<input id="fileinput" class="upload-inpt" type="file">
+	<button class="name-info mb-3">
+	  <!--Lilly Kate-->
+		 <!--<label>Name:</label>-->
+                     <label>{{data.userName || 'User' }}</label>
+                    
+	</button>
+  </div>
+  <div *ngIf="wallet && wallet != null" class="card-block pt-3 pb-3 ml-3 mr-3 bg-red text-white rounded" style="margin-top: -15px;">
+	<div class="row text-center">
+<div class="wallet-info">Wallet Id : {{wallet.walletAddress || 'N/A'}}</div>
+
+	</div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="role">
+<div class="role">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					Users
+				</div>
+				<div class="card-block">
+					<div class="row">
+						<div class="ui-widget-header datatable-search col-md-6">
+							<input #search type="text" class="block" pInputText size="50" placeholder="Search">
+						</div>
+					</div>
+					<p-dataTable *ngIf="this.isTblLoadingDone == true" [value]="userArray" [globalFilter]="search" [rows]="this.numberOfPage" [paginator]="true" [responsive]="true">
+						<p-column field="userId" header="User Id" [sortable]="true"></p-column>
+						<p-column field="userName" header="UserName" [sortable]="true"></p-column>
+						<p-column field="email" header="email" [sortable]="true"></p-column>
+						<p-column field="isEmailVerified" header="EmailVerified" [sortable]="true">
+							<ng-template let-data="rowData" pTemplate="body">
+								<div class="status" [ngClass]="{'activated': data.isEmailVerified === true, 'deactivated': data.isEmailVerified != true}">{{data.isEmailVerified == true ? 'Verified' : 'UnVerified' }}</div>
+							</ng-template>
+						</p-column>
+						<p-column field="active" header="Status" [sortable]="true">
+							<ng-template let-data="rowData" pTemplate="body">
+								 <div class="status" [ngClass]="{'activated': data.active == true, 'deactivated': data.active != true}">{{data.active == true ? 'Activated' : 'Deactivated' }}
+								 </div>
+							</ng-template>
+					 </p-column>
+
+						<p-column field="action" header="Action" [sortable]="true">
+								<ng-template pTemplate="body">
+									<div class="document-icns">
+										<i class="fa fa-eye" (click)="open(viewUserDetails)" placement="top" ngbTooltip="View details"></i>
+										<i class="fa fa-edit" (click)="open(editUser)" placement="top" ngbTooltip="Edit user"></i>
+									</div>
+								</ng-template>
+							</p-column>
+					</p-dataTable>
+					<ng-template #editUser let-c="close" let-d="dismiss">
+					  <div class="modal-header">
+						<h6 class="modal-title text-uppercase">Edit User</h6>
+						<button type="button" class="close" aria-label="Close" (click)="c()">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+					  <div class="modal-body">
+						<select class="form-control">
+							<option disabled>Select user status</option>
+							<option>Activate</option>
+							<option>Deactivate</option>
+						</select>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn theme-btn" (click)="c()">Submit</button>
+						<button type="button" class="btn btn-secondary" (click)="c()">Close</button>
+					  </div>
+					</ng-template>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

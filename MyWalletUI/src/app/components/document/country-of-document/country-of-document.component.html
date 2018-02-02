@@ -1,0 +1,98 @@
+<div class="role">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          Country Document Mapping
+        </div>
+        <div class="card-block">
+          <div class="row">
+            <div class="ui-widget-header datatable-search col-md-6">
+              <input #search type="text" class="block" pInputText size="50" placeholder="Search">
+            </div>
+            <div class="col-md-6">
+              <button class="btn theme-btn right" (click)="open(addCountryDocumentMap)">Add Country Document Mapping </button>
+            </div>
+          </div>
+          <p-dataTable [value]="countryDocumentMappingArray" [globalFilter]="search" [rows]="this.numberOfPage" [paginator]="true"
+            [responsive]="true">
+            <p-column field="country.countryName" header="Country" [sortable]="true">
+            </p-column>
+            <p-column field="documentType.documentType" header="Document Type" [sortable]="true"></p-column>
+            <p-column field="documentMeta.documentName" header="Document Meta" [sortable]="true"></p-column>
+            <p-column field="action" header="Action" [sortable]="true">
+              <ng-template pTemplate="body" let-data="rowData">
+                <div class="document-icns">
+                  <i class="fa fa-edit" (click)="open(addCountryDocumentMap,data )" placement="top" ngbTooltip="Edit Kyc  User Document "></i>
+                </div>
+              </ng-template>
+            </p-column>
+          </p-dataTable>
+          <ng-template #addCountryDocumentMap let-c="close" let-d="dismiss">
+            <div class="modal-header">
+              <h6 *ngIf="!isNew" class="modal-title text-uppercase">EDIT Country Document Mapping</h6>
+              <h6 *ngIf="isNew" class="modal-title text-uppercase"> ADD Country Document MappingT</h6>
+              <button type="button" class="close" aria-label="Close" (click)="c()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form #addCountryDocumentMap="ngForm">
+                <fieldset class="form-group" [ngClass]="{'has-danger':(country.invalid && country.touched && isFormSubmitted == true) || (country.touched && country.pristine && isFormSubmitted == true) || (country.submitted && country.invalid && isFormSubmitted == true)}">
+                  <span class="ui-cell-data">Enter Country:</span>
+                  <select name="country" class="form-control" [(ngModel)]="countryDocumentMapping.countryID" #country="ngModel" required>
+                    <option disabled [ngValue]="undefined">Select country</option>
+                    <option *ngFor="let country of countryArray" [ngValue]="country.countryID">{{country.countryName}}</option>
+                  </select>
+                  <div *ngIf="country.errors && isFormSubmitted == true && (country.dirty || country.touched) ||(countryDocumentMapping.submitted && country.invalid && isFormSubmitted == true)"
+                    class="error">
+                    <div [hidden]="!country.errors.required">Country is required.</div>
+                  </div>
+                </fieldset>
+                <br>
+                <fieldset class="form-group" [ngClass]="{'has-danger':(documentType.invalid && documentType.touched && isFormSubmitted == true) || (documentType.touched && documentType.pristine && isFormSubmitted == true) || (documentType.submitted && documentType.invalid && isFormSubmitted == true)}">
+                  <span class="ui-cell-data">Select Document Type:</span>
+                  <select class="form-control" [(ngModel)]="countryDocumentMapping.documentTypeID" name="documentType" #documentType="ngModel"
+                    required>
+                    <option disabled [ngValue]="undefined">Document Type</option>
+                    <option *ngFor="let documentType of  documentTypeArray" [ngValue]="documentType.documentTypeID">{{documentType.documentType}}</option>
+                  </select>
+                  <div *ngIf="documentType.errors && isFormSubmitted == true && (documentType.dirty || documentType.touched) ||(countryDocumentMapping.submitted && documentType.invalid && isFormSubmitted == true)"
+                    class="error">
+                    <div [hidden]="!documentType.errors.required"> Document Type is required.</div>
+                  </div>
+                </fieldset>
+                <br>
+                <fieldset class="form-group" [ngClass]="{'has-danger':(documentMeta.invalid && documentMeta.touched && isFormSubmitted == true) || (documentMeta.touched && documentMeta.pristine && isFormSubmitted == true) || (documentMeta.submitted && documentMeta.invalid && isFormSubmitted == true)}">
+                  <span class="ui-cell-data">Select Document Meta:</span>
+                  <select name="documentMeta" class="form-control" [(ngModel)]="countryDocumentMapping.documentMetaID" #documentMeta="ngModel"
+                    required>
+                    <option disabled [ngValue]="undefined">Document Meta</option>
+                    <option *ngFor="let documentMeta of  documentMetaArray" [ngValue]="documentMeta.documentMetaID">{{documentMeta.documentName}}</option>
+                  </select>
+                  <div *ngIf="documentMeta.errors && isFormSubmitted == true && (documentMeta.dirty || documentMeta.touched) ||(countryDocumentMapping.submitted && documentMeta.invalid && isFormSubmitted == true)"
+                    class="error">
+                    <div [hidden]="!documentMeta.errors.required"> Document Meta is required.</div>
+                  </div>
+                </fieldset>
+                <fieldset class="form-group" [ngClass]="{'has-danger':(isMandatory.invalid && isMandatory.touched && isFormSubmitted == true) || (isMandatory.touched && isMandatory.pristine && isFormSubmitted == true) || (countryDocumentMapping.submitted && isMandatory.invalid && isFormSubmitted == true)}">
+                  <span class="ui-cell-data">Status:</span>
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="isMandatory" #isMandatory="ngModel" [(ngModel)]="countryDocumentMapping.isMandatory"> Mandatory
+                    
+                  </label>
+                </fieldset>
+
+              </form>
+              <br>
+            </div>
+            <div class="modal-footer">
+              <button *ngIf="isNew" type="button" class="btn theme-btn" (click)="addCountryDocumentMapping(countryDocumentMapping,addCountryDocumentMap,c)">Submit</button>
+              <button *ngIf="!isNew" type="button" class="btn theme-btn" (click)="editCountryDocumentMapping(countryDocumentMapping,addCountryDocumentMap);c()">Submit</button>
+              <button type="button" class="btn btn-secondary" (click)="c()">Close</button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>

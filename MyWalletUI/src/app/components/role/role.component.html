@@ -1,0 +1,244 @@
+<div class="role">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header">
+               Role
+            </div>
+            <div class="card-block">
+               <div class="row">
+                  <div class="ui-widget-header datatable-search col-md-6">
+                     <input #search type="text" class="block" pInputText size="50" placeholder="Search">
+                  </div>
+                  <div class="col-md-6">
+                     <button class="btn theme-btn right" (click)="open(addrole)">Add role</button>
+                  </div>
+               </div>
+               <p-dataTable *ngIf="this.isTblLoadingDone == true" [value]="roleData" [globalFilter]="search" [rows]="this.numberOfPage"
+               [paginator]="true" [responsive]="true">
+               <p-column field="roleId" header="Role id" [sortable]="true"></p-column>
+               <p-column field="roleName" header="Role name" [sortable]="true"></p-column>
+               <p-column field="active" header="Status" [sortable]="true">
+                  <ng-template let-data="rowData" pTemplate="body">
+                     <div class="status" [ngClass]="{'activated': data.isActive == true, 'deactivated': data.isActive != true}">{{data.isActive == true ? 'Activated' : 'Deactivated' }}
+                     </div>
+                  </ng-template>
+               </p-column>
+               <p-column header="Actions">
+                  <ng-template let-data="rowData" pTemplate type="body">
+                     <div class="document-icns">
+                        <i class="fa fa-eye" (click)="open(viewdocument, data)" placement="top" ngbPopover="Role Name: {{data.roleName}} " triggers="mouseenter:mouseleave"
+                           popoverTitle="Role Description"></i>
+                        <i class="fa fa-edit" (click)="open(editdocument,data)" placement="top" ngbTooltip="Edit Role"></i>
+                        <i class="fa fa-bars" (click)="open(assigndocument,data);getActionByRole(data)" placement="top" ngbTooltip="Assign action to role" aria-hidden="true"></i>
+                        <i class="fa fa-trash-o" (click)="deleteRole(data)" placement="top" ngbTooltip="delete role" aria-hidden="true"></i>
+                  </div>
+                  </ng-template>
+               </p-column>
+               </p-dataTable>
+               <!-- VIEW ROLE-->
+               <ng-template #viewdocument let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                     <h6 class="modal-title text-uppercase">View Document</h6>
+                     <button type="button" class="close" aria-label="Close" (click)="c()">
+                     <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Role Name</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <td>{{viewData.roleName}}</td>
+                        </tbody>
+                        <thead>
+                           <tr>
+                              <th>Role Description</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>{{viewData.roleDescription}}</td>
+                           </tr>
+                        </tbody>
+                        <tbody>
+                           <tr>
+                              <td>{{viewData.activitySelector}}
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" (click)="c()">Close</button>
+                  </div>
+               </ng-template>
+               <!---EDIT ROLE-->
+               <ng-template #editdocument let-c="close" let-d="dismiss">
+                  <div class="modal-header">
+                     <h6 class="modal-title text-uppercase">Edit Role</h6>
+                     <button type="button" class="close" aria-label="Close" (click)="c()">
+                     <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <form #editRole="ngForm" #form="ngForm">
+                        <fieldset class="form-group" [ngClass]="{'has-danger':(roleName.invalid && roleName.touched && isFormSubmitted == true) || (roleName.touched && roleName.pristine && isFormSubmitted == true) || (editRole.submitted && roleName.invalid && isFormSubmitted == true)}">
+                           <span class="ui-cell-data">Role Name</span>
+                           <input type="text" class="form-control" name="roleName" #roleName="ngModel" placeholder="current role name" [(ngModel)]="viewData.roleName"
+                           minlength="5" maxlength="100" (blur)="trimLeadingAndTrailing()" disabled required />
+                        </fieldset>
+                             
+                        <fieldset class="form-group" [ngClass]="{'has-danger':(roleDescription.invalid && roleDescription.touched && isFormSubmitted == true) || (roleDescription.touched && roleDescription.pristine && isFormSubmitted == true) || (editRole.submitted && roleDescription.invalid && isFormSubmitted == true)}">
+                                    
+                              <span class="ui-cell-data">Role Description</span>
+                              <input type="text" class="form-control" name="roleDescription" #roleDescription="ngModel" placeholder="Enter Role Description"
+                              [(ngModel)]="viewData.roleDescription" minlength="5" maxlength="255" (keyup)="checkMaxLength(255, viewData.roleDescription, 'roleDescription')"
+                              pattern="(^[a-zA-Z\s-]+$)"  required />
+                              <div *ngIf="(roleDescription.errors && (isFormSubmitted == true || (roleDescription.dirty || roleDescription.touched)))"
+                                 class="error">
+                                 <div *ngIf="roleDescription.errors.required && !roleDescription.errors.minlength && !roleDescription.errors.pattern && !roleDescription.errors.maxlength">
+                                    Role Description is required.
+                                 </div>
+                                 <div *ngIf="!(roleDescription.errors && (isFormSubmitted == true || (roleDescription.dirty || roleDescription.touched))) && fieldErrors.name"
+                                    class="error"></div>
+                                 <div *ngIf="roleDescription.errors.minlength && !roleDescription.errors.required"> Role Description should be atleast 5 character long.</div>
+                                 <div *ngIf="roleDescription.errors.pattern && !roleDescription.errors.minlength">only alphabets are allowed.</div>
+                              </div>
+                              <div *ngIf="!roleDescription?.errors?.minlength && !roleDescription?.errors?.pattern && !roleDescription?.errors?.required && fieldErrors.roleDescription"
+                                 class="error">
+                                 Role Description cannot be more than 255 characters.
+                              </div>
+                           </fieldset>
+
+                        <fieldset class="form-group" [ngClass]="{'has-danger':(active.invalid && active.touched && isFormSubmitted == true) || (active.touched && active.pristine && isFormSubmitted == true) || (editRole.submitted && active.invalid && isFormSubmitted == true)}">
+                           <span class="ui-cell-data">Status:</span>
+                           <label class="form-check-label">
+                           <input class="form-check-input" type="checkbox" name="active" #active="ngModel" [(ngModel)]="viewData.isActive"> Active
+                           </label>
+                        </fieldset>
+                        <!-- <angular2-multiselect [data]="activityArray" name="activitySelector" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
+                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+                        </angular2-multiselect>-->
+
+                     </form>                   </div>
+                  <div class="modal-footer">
+                     <button type="button" (click)="editroleSubmit(this.viewData, c)" class="btn theme-btn">Submit</button>
+                     <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+                  </div>
+               </ng-template>
+                 <!-- Assign Action To Role -->
+               <ng-template #assigndocument let-c="close" let-d="dismiss">
+                        <div class="modal-header">
+                           <h6 class="modal-title text-uppercase">Assign Action To Role</h6>
+                           <button type="button" class="close" aria-label="Close" (click)="c()">
+                           <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        <div class="modal-body">
+                           <form #assignActionsToRole="ngForm" #form="ngForm">
+                              <fieldset class="form-group" [ngClass]="{'has-danger':(roleName.invalid && roleName.touched && isFormSubmitted == true) || (roleName.touched && roleName.pristine && isFormSubmitted == true) || (assignActionsToRole.submitted && roleName.invalid && isFormSubmitted == true)}">
+                                 <span class="ui-cell-data">Role Name</span>
+                                 <input type="text" class="form-control" name="roleName" #roleName="ngModel" placeholder="current role name" [(ngModel)]="viewData.roleName"
+                                 minlength="5" maxlength="100" (blur)="trimLeadingAndTrailing()" disabled required />
+                              </fieldset>
+                                   
+                             
+      
+                               <angular2-multiselect [data]="actionArray" name="activitySelector" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
+                              (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+                        </angular2-multiselect>
+      
+                           </form>                   </div>
+                        <div class="modal-footer">
+                           <button type="button" (click)="assignActionToRole(this.viewData, c)" class="btn theme-btn">Submit</button>
+                           <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+                        </div>
+                     </ng-template>
+                    
+
+               <!--ADD ROLE-->
+               <div class="role-loader" *ngIf="isAuthenticateSpinner">
+                  <div class="loader09"></div>
+               </div>
+               <ng-template #addrole let-c="close" let-d="dismiss">
+                  <form #addRole="ngForm">
+                  <div class="modal-header">
+                     <h6 class="modal-title text-uppercase">Add Role</h6>
+                     <button type="button" class="close" aria-label="Close" (click)="c()">
+                     <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <fieldset class="form-group" [ngClass]="{'has-danger':(roleName.invalid && roleName.touched && isFormSubmitted == true) ||	(roleName.touched && roleName.pristine && isFormSubmitted == true) ||	(addRole.submitted && roleName.invalid && isFormSubmitted == true)}">
+                        <span class="ui-cell-data">Role Name</span>
+                        <input type="text" class="form-control" name="roleName" #roleName="ngModel" placeholder="Enter Role Name" [(ngModel)]="role.roleName"
+                        minlength="2" maxlength="100" (keyup)="checkMaxLength(100, role.roleName, 'roleName')"  pattern="[a-zA-Z]+([\s][a-zA-Z]+)*"
+                        required />
+                        <div *ngIf="(roleName.errors && (isFormSubmitted == true || (roleName.dirty || roleName.touched)))" class="error">
+                           <div *ngIf="roleName.errors.required && !roleName.errors.minlength && !roleName.errors.pattern && !roleName.errors.maxlength">
+                              Role name is required.
+                           </div>
+                           <div *ngIf="!(roleName.errors && (isFormSubmitted == true || (roleName.dirty || roleName.touched))) && fieldErrors.name"
+                              class="error"></div>
+                           <div *ngIf="roleName.errors.minlength && !roleName.errors.required"> Role name should be atleast 2 character long.</div>
+                           <div *ngIf="roleName.errors.pattern && !roleName.errors.minlength">only alphabets and single space is allowed. </div>
+                        </div>
+                        
+                        <div *ngIf="!roleName?.errors?.minlength && !roleName?.errors?.pattern && !roleName?.errors?.required && fieldErrors.roleName"
+                           class="error">
+                           Role name cannot be more than 100 characters.
+                        </div>
+                     </fieldset>
+                     <fieldset class="form-group" [ngClass]="{'has-danger':(roleDescription.invalid && roleDescription.touched && isFormSubmitted == true) ||(roleDescription.touched && roleDescription.pristine && isFormSubmitted == true) ||	(addRole.submitted && roleDescription.invalid && isFormSubmitted == true)}">
+                        <span class="ui-cell-data">Role Description</span>
+                        <input type="text" class="form-control" name="roleDescription" #roleDescription="ngModel" placeholder="Enter Role Description"
+                        [(ngModel)]="role.roleDescription" minlength="5" maxlength="255" (keyup)="checkMaxLength(255, role.roleDescription, 'roleDescription')"
+                        pattern="(^[a-zA-Z\s-]+$)"  required />
+                        <div *ngIf="(roleDescription.errors && (isFormSubmitted == true || (roleDescription.dirty || roleDescription.touched)))"
+                           class="error">
+                           <div *ngIf="roleDescription.errors.required && !roleDescription.errors.minlength && !roleDescription.errors.pattern && !roleDescription.errors.maxlength">
+                              Role Description is required.
+                           </div>
+                           <div *ngIf="!(roleDescription.errors && (isFormSubmitted == true || (roleDescription.dirty || roleDescription.touched))) && fieldErrors.name"
+                              class="error"></div>
+                           <div *ngIf="roleDescription.errors.minlength && !roleDescription.errors.required"> Role Description should be atleast 5 character long.</div>
+                           <div *ngIf="roleDescription.errors.pattern && !roleDescription.errors.minlength">only alphabets are allowed.</div>
+                        </div>
+                        <div *ngIf="!roleDescription?.errors?.minlength && !roleDescription?.errors?.pattern && !roleDescription?.errors?.required && fieldErrors.roleDescription"
+                           class="error">
+                           Role Description cannot be more than 255 characters.
+                        </div>
+                     </fieldset>
+                     <!-- <fieldset class="form-group" [ngClass]="{'has-danger':(active.invalid && active.touched && isFormSubmitted == true) || (active.touched && active.pristine && isFormSubmitted == true) || (addRole.submitted && active.invalid && isFormSubmitted == true)}">
+                        <span class="ui-cell-data">Status:</span>
+                        <label class="form-check-label">
+                        <input class="form-check-input"  type="checkbox" name="active" #active="ngModel"[(ngModel)]="role.active" required />Active
+                        </label>
+                     </fieldset> -->
+                     <fieldset class="form-group" [ngClass]="{'has-danger':(active.invalid && active.touched && isFormSubmitted == true) ||(active.touched && active.pristine && isFormSubmitted == true) ||	(addRole.submitted && active.invalid && isFormSubmitted == true)}">
+                        <span class="ui-cell-data">Status:</span>
+                        <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name="active" #active="ngModel"  [(ngModel)]="role.isActive"  required />
+                        </label>
+                     </fieldset>
+
+
+
+                     <!-- <angular2-multiselect [data]="activityArray" name="activitySelector" [(ngModel)]="selectedItemsInAdd" [settings]="dropdownSettings"
+                     text="select" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                     (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+                  -->
+                  </div>
+                  <div class="modal-footer">
+                     <button type="submit" class="btn theme-btn" (click)="addroleSubmit(addRole, c)">Submit</button>
+                     <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+                  </div>
+                  </form>
+               </ng-template>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

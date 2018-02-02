@@ -1,0 +1,33 @@
+@import "../../../../assets/styles/scss/custom";
+img.pro-img {
+    cursor: pointer;
+    width: 131px;
+    height: 95px;
+    padding-top: 2px;
+}
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+.profile-img {
+    position: relative;
+
+}
+
+img.img-circle {
+    border-radius:50%;
+    height: 120px;
+    width: 120px;
+    margin-bottom: 10px;
+}
+.profile-img input {
+    /* font-size: 120px; */
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+    min-height: 189px;
+    width: calc(100% + 30px);
+    margin: -15px;
+}

@@ -1,0 +1,206 @@
+.dashboard {
+	font-weight: normal;
+	.dashboard-user-info {
+		background: #333;
+		// padding: 15px;
+		padding: 39px;
+		color: hsla(0,0%,100%,.87)!important;
+		img {
+			width: 100%;
+		}
+	}
+	.dashboard-wallet-info {
+		background: #cd2122;
+		padding: 15px;
+		color: hsla(0,0%,100%,.87)!important;
+		img {
+			width: 100%;
+		}
+	}
+	.right-part {
+		padding-left: 20px;
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+		-webkit-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		h2 {
+			font-weight: normal;
+			text-transform: uppercase;
+			font-size: 1.8rem;
+			padding-bottom: 3px;
+			margin: 0;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			span {
+				font-weight: 600;
+			}
+		}
+		h6 {
+			font-weight: normal;
+			padding-top: 7px;
+			font-size: 15px;
+			margin: 0;
+			&.account-status {
+				padding: 0 0 7px 0px;
+			}
+		}
+	}
+	.dashboard-buy-sell {
+		background: #fff;
+		padding: 15px;
+		margin-top: 15px;
+		max-height: 363px;
+		min-height: 363px;
+		overflow: auto;
+		&::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			background-color: #F5F5F5;
+		}
+
+		&::-webkit-scrollbar {
+			width: 10px;
+			background-color: #F5F5F5;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background-color: #ccc;
+			border: 2px solid #ccc;
+		}
+		h3 {
+			text-align: center;
+			font-size: 1.8em;
+			font-weight: normal;
+			color: #737373;
+			font-family: "Arimo", Helvetica, sans-serif;
+			margin-top: 20px;
+		}
+		.bitcoin-icn {
+			i {
+				font-size: 78px;
+				text-align: center;
+				margin: 0 auto;
+				display: block;
+				margin-bottom: 15px;
+				color: #868686;
+			}
+		}
+		.buy-sell-btns {
+			margin-top: 25px;
+			button {
+				background: #efefef;
+				border: 0;
+				padding: 9px 12px;
+				font-size: 15px;
+				border-radius: 5px;
+				margin-top: 12px;
+				width: 48%;
+				cursor: pointer;
+				transition: 0.2s ease-in-out;
+				-webkit-transition: 0.2s ease-in-out;
+				-ms-transition: 0.2s ease-in-out;
+				&:hover {
+					background: #cd2122;
+					color: #fff;
+				}
+			}
+			.full {
+				width: 100%;
+			}
+		}
+	}
+	.news-mn {
+		max-height: 363px;
+		overflow: auto;
+		&::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			background-color: #F5F5F5;
+		}
+
+		&::-webkit-scrollbar {
+			width: 10px;
+			background-color: #F5F5F5;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background-color: #ccc;
+			border: 2px solid #ccc;
+		}
+		.news-feed {
+			ul{
+				margin: 0;
+				padding: 0;
+				li {
+					list-style-type: none;
+					margin-bottom: 15px;
+					border-bottom: 1px solid #ccc;
+					padding-bottom: 15px;
+					p {
+						font-size: 13px;
+						color: #777;
+						margin-bottom: 10px;
+					  }
+					.icons{
+						span {
+							margin-right: 15px;
+							font-size: 15px;
+							color: #777;
+							cursor: pointer;
+						}
+					}
+					.time {
+						font-size: 13px;
+						color: #777;
+					}
+					&:last-child {
+						margin-bottom: 0;
+						padding-bottom: 0;
+						border-bottom: 0;
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+.line-container {
+  height: 300px;
+  width: 100%;
+  display: block;
+}
+.gauge-container {
+  height: 300px;
+  width: 100%;
+  display: block;
+}
+
+.dashboard-chart {
+	chart {
+		width: 100%;
+		display: block;
+	}
+}
+.my-datepicker {
+	text-align: center;
+	width: 70%;
+    margin: 0 auto 20px;
+	label {
+		margin-right: 35px;
+		float: left;
+	}
+	button {
+		height: 31px;
+		padding: 0px 22px;
+	}
+	.error {
+		text-align: left;
+	}
+}
+.custom-select{
+	background-color: #fff;
+    padding: 0 8px;
+    height: 30px !important;
+    width: 180px;
+}

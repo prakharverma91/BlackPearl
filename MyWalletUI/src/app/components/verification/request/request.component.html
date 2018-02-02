@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-sm-12 col-md-12">
+	<div class="card">
+	  <div class="card-header">
+		Verification Requests
+	  </div>
+	  <div class="card-block">
+			<p-dataTable [value]="verifyingRequests">
+				<p-column field="date" header="Date" [sortable]="true"></p-column>
+				<p-column field="name" header="Agency name" [sortable]="true"></p-column>
+				<p-column field="ip" header="IP Address" [sortable]="true"></p-column>
+				<p-column field="agentinfo" header="Agent Info" [sortable]="true"></p-column>
+			</p-dataTable>
+	  </div>
+	</div>
+  </div>
+</div>

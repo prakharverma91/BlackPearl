@@ -1,0 +1,85 @@
+@media (min-width: 768px) and (max-width: 991px) {
+	.signin-form {
+		width: 34% !important;
+	}
+}
+
+@media (max-width: 767px) {
+	.dashboard {
+		.dashboard-user-info, .dashboard-wallet-info {
+			margin-bottom: 10px;
+			text-align: center;
+			img {
+				width: 33% !important;
+			}
+			.right-part {
+				margin-top: 10px;
+				h2 {
+					font-size: 1.2rem !important;
+				}
+				h6 {
+					font-size: 13px !important;
+				}
+			}
+		}
+	}
+	.login-time-table {
+		overflow: auto;
+	}
+	form.accountpassword {
+		width: 100% !important;
+	}
+	.signin-form {
+		width: 52% !important;
+	}
+	.email-verfication {
+		width: 90% !important;
+	}
+	.mobile-toggle {
+		display: block;
+	}
+	.header-part {
+		nav {
+			top: 10px !important;
+			width: 100% !important;
+			z-index: 1;
+			.navbar-toggler-right {
+				right: 0 !important;
+				cursor: pointer;
+			}
+			.right-nav {
+				position: absolute;
+				background: #fff;
+				left: 0;
+				top: 48px;
+				width: 100%;
+				overflow: hidden;
+				max-height: 0;
+				transition: 0.2s ease-in-out;
+				-webkit-transition: 0.2s ease-in-out;
+				-ms-transition: 0.2s ease-in-out;
+				&.block {
+					max-height: 400px !important;
+					overflow: inherit !important;
+				}
+				li {
+					padding: 12px 0 12px 25px;
+					border-bottom: 1px solid #ccc;
+					display: block !important;
+				}
+			}
+		}
+	}
+	.datatable-scroll {
+		overflow: auto;
+	}
+}
+
+@media (max-width: 575px) { 
+	.signin-form {
+		width: 100% !important;
+	}
+	.middle-part h3 {
+		display: none;
+	}
+}

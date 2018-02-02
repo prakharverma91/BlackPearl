@@ -1,0 +1,29 @@
+
+
+.email-verfication{
+	position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgb(234, 234, 234);
+    text-align: center;
+    width: 36%;
+    padding: 20px;
+    margin: 0 auto;
+	border-radius: 6px;
+	h3 {
+		color: #565656;
+		font-weight: normal;
+	}
+	p {
+		color: #565656;
+	}
+	img {
+		margin-bottom: 10px;
+	}
+	i {
+	    font-size: 45px;
+		margin-bottom: 10px;
+		color: #cd2122;
+	}
+}
+

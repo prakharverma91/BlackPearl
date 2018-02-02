@@ -1,0 +1,231 @@
+<div class="dashboard" *ngIf="roleName == 'user'">
+   <div class="row">
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-block" >
+               <div  >Your last login was on <b>{{lastLogin.loginTime}}</b> from IP {{lastLogin.loginIP}}</div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>   
+<div class="dashboard" *ngIf="roleName == 'user'">
+    <div class="row" *ngIf="roleName == 'user'" >
+      <div class="col-md-6">
+         <div class="dashboard-user-info">
+            <div class="row">
+               <div class="col-md-3 col-xs-3">
+                  <img alt="profile Image" class="rounded-circle" [src]="getImageUrlForHosting(profileImgUrl)">
+               </div>
+               <div class="col-md-9 col-xs-9">
+                  <div class="right-part">
+                     <h2><label>{{data.userName}}</label></h2>
+                     <h6>Wallet Id : {{wallet?.wallet_address || 'N/A'}}</h6>
+                     <!-- <h6>Verification : In-Progress</h6> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-6">
+         <div class="dashboard-wallet-info">
+            <div class="row">
+               <div class="col-md-3">
+                  <img alt="" class="rounded-circle" src="assets/images/wallet.png">
+               </div>
+               <div class="col-md-9">
+                  <div class="right-part">
+                     <h6 class="account-status">Your account status is</h6>
+                     <h2>Unverified</h2>
+                     <h6 class="underline">(Get verified now)</h6>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row" *ngIf="roleName == 'user'" >
+      <div class="col-md-12">
+         <div class="card mt15">
+            <div class="card-block">
+               <div class="mb5">Profile Completion <strong>60%</strong></div>
+               <ngb-progressbar type="success" [value]="60" [striped]="true"></ngb-progressbar>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row" *ngIf="userType == 'user'" >
+      <div class="col-md-12">
+         <div class="card">
+            <div class="card-header">Documents</div>
+            <div class="card-block dashboard-kyc">
+               <div class="datatable-scroll">
+                  <p-dataTable [value]="userdocumentdata">
+                     <p-column field="kycUserDocumentID" header="ID" [sortable]="true"></p-column>
+                     <!-- <ng-template  let-data="rowData" pTemplate="body">
+                        <p-column field="kycDocumentMetaID" header="ID" [sortable]="true"></p-column>
+                        </ng-template> -->
+                     <p-column field="kycDoc.kycDocumentMeta.documentName" header="Document name" [sortable]="true"></p-column>
+                     <p-column field="uploadedAt" header="Upload time" [sortable]="true"></p-column>
+                     <p-column field="documentStatus" header="Status" [sortable]="true">
+                        <ng-template *ngFor="let data of documentData" let-data="rowData" pTemplate="body">
+                           <div class="status" [ngClass]="{'completed': data.status === 'Completed', 'rejected': data.status === 'Rejected', 'pending': data.status === 'Pending', 'inprocess': data.status === 'Inprocess'}">{{data.status}}</div>
+                        </ng-template>
+                     </p-column>
+                     <p-column field="url" header="Thumbnail" [sortable]="true">
+                        <ng-template let-col let-userdocumentdata="rowData" pTemplate type="body">
+                           <img src="{{userdocumentdata[col.field]}}"    class="img-circle" style width=60px height="60px;">
+                        </ng-template>
+                     </p-column>
+                  </p-dataTable>
+                  <!-- <p-dataTable [value]="documentData">
+                     <p-column field="sno" header="S.no" [sortable]="true"></p-column>
+                     <p-column field="date" header="Date" [sortable]="true"></p-column>
+                     <p-column field="name" header="Document name" [sortable]="true"></p-column>
+                     <p-column field="status" header="Status" [sortable]="true">
+                     	<ng-template *ngFor="let data of documentData" let-data="rowData" pTemplate="body">
+                     		<div class="status" [ngClass]="{'completed': data.status === 'Completed', 'rejected': data.status === 'Rejected', 'pending': data.status === 'Pending', 'inprocess': data.status === 'Inprocess'}">{{data.status}}</div>
+                     	</ng-template>
+                     </p-column>
+                     <p-column field="action" header="Action" [sortable]="true">
+                     	<ng-template pTemplate="body">
+                     		<div class="document-icns">
+                     			<i class="fa fa-eye" (click)="open(viewdocument)" placement="top" ngbTooltip="View document"></i>
+                     			<i class="fa fa-edit" (click)="open(editdocument)" placement="top" ngbTooltip="Edit document"></i>
+                     		</div>
+                     	</ng-template>
+                     </p-column>
+                     </p-dataTable>
+                     <ng-template #viewdocument let-c="close" let-d="dismiss">
+                     <div class="modal-header">
+                     <h6 class="modal-title text-uppercase">View Document</h6>
+                     <button type="button" class="close" aria-label="Close" (click)="c()">
+                     	<span aria-hidden="true">&times;</span>
+                     </button>
+                     </div>
+                     <div class="modal-body">
+                     <h3>Document image here</h3>
+                     </div>
+                     <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" (click)="c()">Close</button>
+                     </div>
+                     </ng-template>
+                     <ng-template #editdocument let-c="close" let-d="dismiss">
+                     <div class="modal-header">
+                     <h6 class="modal-title text-uppercase">Edit Document</h6>
+                     <button type="button" class="close" aria-label="Close" (click)="c()">
+                     	<span aria-hidden="true">&times;</span>
+                     </button>
+                     </div>
+                     <div class="modal-body">
+                     <div class="upload-btn-wrapper">
+                     	<button class="btn btn-grey">Upload file</button>
+                     	<input type="file" name="myfile" />
+                     </div>
+                     </div>
+                     <div class="modal-footer">
+                     <button type="button" class="btn theme-btn" (click)="c()">Submit</button>
+                     <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+                     </div>
+                     </ng-template> -->
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="dashboard" *ngIf="roleName == 'admin'">
+     <!-- <h3 >Admin Dashboard</h3>   -->
+   <div class="dashboard" >
+      <div class="row">
+         <div class="col-md-12">
+            <div class="card">
+               <div class="card-block">
+                  <div>Admin Your last login was on <b>{{lastLogin.loginTime}}</b> from {{lastLogin.loginIP}}</div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-4 col-md-4">
+            <div class="card card-block card-widget">
+               <div class="widget-icon rounded-circle bg-green text-white icon">
+                  <i class="fa fa-users"></i>
+               </div>
+               <div class="block ml-3 mr-3">
+                  <h5 class="mb-0 fw-400">
+                     {{usersCount.totalUsers}}
+                  </h5>
+                  <small class="text-muted text-uppercase ">
+                  <strong>Total users</strong>
+                  </small>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-4 col-md-4">
+            <div class="card card-block card-widget">
+               <div class="widget-icon rounded-circle bg-blue text-white">
+                  <i class="fa fa-user"></i>
+               </div>
+               <div class="block ml-3 mr-3">
+                  <h5 class="mb-0 fw-400">
+                     {{usersCount.activeUsers}}
+                  </h5>
+                  <small class="text-muted text-uppercase ">
+                  <strong>Total Active users</strong>
+                  </small>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-4 col-md-4">
+            <div class="card card-block card-widget">
+               <div class="widget-icon rounded-circle bg-teal text-white">
+                  <i class="fa fa-user-secret"></i>
+               </div>
+               <div class="block ml-3 mr-3">
+                  <h5 class="mb-0 fw-400">
+                     {{usersCount.merchantUsers}}
+                  </h5>
+                  <small class="text-muted text-uppercase ">
+                  <strong>Total Merchant</strong>
+                  </small>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- <div class="row">
+         <div class="col-md-12">
+            <div class="card">
+               <div class="card-header">Users</div>
+               <div class="card-block">
+                  <div class="dashboard-chart">
+                     <div class="my-datepicker">
+                        <label>
+                           <p-calendar [(ngModel)]="userData.startDate" [maxDate]="userData.endDate || maxDate" dateFormat="yy-mm-dd" placeholder="From" [showIcon]="true"></p-calendar>
+                           <div class="error" *ngIf="startDateVald == true && !userData.startDate">Please select start date.</div>
+                        </label>
+                        <label>
+                           <p-calendar [(ngModel)]="userData.endDate" [minDate]="userData.startDate" [maxDate]="maxDate" dateFormat="yy-mm-dd" placeholder="To" [showIcon]="true"></p-calendar>
+                           <div class="error" *ngIf="endDateVald == true && !userData.endDate">Please select end date.</div>
+                        </label>
+                        <label>
+                           <select class="form-control custom-select" [(ngModel)]="userData.order">
+                           <option disabled [ngValue]="undefined" selected>Order by :</option>
+                           <option value="day">By day</option>
+                           <option value="month">By month</option>
+                           <option value="year">By year</option>
+                           </select>
+                           <div class="error" *ngIf="orderVald == true && !userData.order">Please select Order.</div>
+                        </label>
+                        <button class="btn theme-btn" (click)="getUsersbyOrder(userData)">Search</button>
+                     </div>
+                     <chart [options]="options"></chart>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div> -->
+      
+
+   </div>
+</div>

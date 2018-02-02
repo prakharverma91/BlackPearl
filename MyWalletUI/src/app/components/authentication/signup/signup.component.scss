@@ -1,0 +1,23 @@
+@import "../../../../assets/styles/scss/custom";
+
+p-captcha {
+	div {
+		width: 100%;
+	}
+}
+.errormassage
+{
+	padding-bottom:6px;
+}
+form .error{
+    font-size: 11.5px;
+    line-height: 15px;
+ }
+
+.signin-form fieldset{
+	margin-bottom: 20px;
+ }
+.signin-form fieldset label {
+    margin-bottom: 2px;
+}
+
