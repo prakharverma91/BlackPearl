@@ -28,7 +28,7 @@
 
 				<div class="form-groups">
 					<div class="form-group" [ngClass]="{'has-danger':(email.invalid && email.touched && isFormSubmitted == true) || (email.touched && email.pristine && isFormSubmitted == true)|| (createAccount.submitted && email.invalid && isFormSubmitted == true)}">
-						<input type="text" class="form-control" name="name" #name="ngModel" placeholder="Name" [(ngModel)]="signup.userName" minlength="5"
+						<input type="text" class="form-control" name="name" #name="ngModel" placeholder="Name" [(ngModel)]="signup.userName" minlength="2"
 						 maxlength="100" (keyup)="checkMaxLength(20, signup.name, 'name')" pattern="(^(?=.{5,100}$)(?!.* {2,})[a-zA-Z][a-zA-Z ]*[a-zA-Z]$)"
 						 required/>
 						<div *ngIf="(name.errors && (isFormSubmitted == true || (name.dirty || name.touched)))" class="error">
@@ -105,7 +105,7 @@
 						<select class="form-control" name="country" [(ngModel)]="signup.country" #country="ngModel" required>
 							<!-- <option disabled>Select country</option> -->
 							<option disabled [ngValue]="undefined">Select country</option>
-							<option *ngFor="let country of countryArray" [ngValue]="country.code">{{country.name}}</option>
+							<option *ngFor="let country of countryArray" [ngValue]="country.name">{{country.name}}</option>
 						</select>
 						<div *ngIf="country.errors && isFormSubmitted == true && (country.dirty || country.touched) ||(createAccount.submitted && country.invalid && isFormSubmitted == true)"
 						 class="error">

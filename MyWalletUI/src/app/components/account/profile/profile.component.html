@@ -234,8 +234,8 @@
                                                 <div class="user-info">
                                                       <fieldset class="form-group" [ngClass]="{'has-danger':(phone.invalid && phone.touched && isFormSubmitted == true ) ||(phone.touched && phone.pristine && isFormSubmitted == true)||(upload.submitted && phone.invalid && isFormSubmitted == true)}">
                                                             <label>Phone no.:</label>
-                                                            <input type="tel" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="selectedItem.contactNo" minlength="4" maxlength="10"
-                                                                  (keyup)="checkMaxLength(10, selectedItem.contactNo, 'phone')"
+                                                            <input type="tel" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="selectedItem.contactNo" minlength="4" maxlength="11"
+                                                                  (keyup)="checkMaxLength(11, selectedItem.contactNo, 'phone')"
                                                                   pattern="[0-9]*" required/>
                                                             <div *ngIf="(phone.errors && (isFormSubmitted == true || (phone.dirty || phone.touched)))" class="error">
                                                                   <div *ngIf="phone.errors.required && !phone.errors.minlength && !phone.errors.pattern && !phone.errors.maxlength">Phone no. is required.</div>
@@ -394,8 +394,8 @@
                               <div class="user-info">
                                     <fieldset class="form-group" [ngClass]="{'has-danger':(phone.invalid && phone.touched && isFormSubmitted == true ) ||(phone.touched && phone.pristine && isFormSubmitted == true)||(addAddress.submitted && phone.invalid && isFormSubmitted == true)}">
                                           <label>Phone no.:</label>
-                                          <input type="tel" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="newAddress.contactNo" minlength="4" maxlength="10"
-                                                (keyup)="checkMaxLength(10, newAddress.contactNo, 'phone')" pattern="[0-9]*" required/>
+                                          <input type="tel" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="newAddress.contactNo" minlength="4" maxlength="11"
+                                                (keyup)="checkMaxLength(11, newAddress.contactNo, 'phone')" pattern="[0-9]*" required/>
                                           <div *ngIf="(phone.errors && (isFormSubmitted == true || (phone.dirty || phone.touched)))" class="error">
                                                 <div *ngIf="phone.errors.required && !phone.errors.minlength && !phone.errors.pattern && !phone.errors.maxlength">Phone no. is required.</div>
                                                 <div *ngIf="phone.errors.minlength && !phone.errors.required">phone no. should be atleast 4 character long.</div>

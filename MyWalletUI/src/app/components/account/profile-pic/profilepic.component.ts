@@ -20,7 +20,7 @@ export class ProfilepicComponent implements OnInit {
   private isEdited = false;
   private data: any = {};
   private wallet = null;
-  private userId:any;
+  private userId: any;
   @ViewChild('myInput')
   myInputVariable: any;
   constructor(private MainService: MainService, public toastr: ToastsManager, public vcr: ViewContainerRef, private router: Router, ) {
@@ -31,19 +31,19 @@ export class ProfilepicComponent implements OnInit {
     this.userId = localStorage.getItem('userId');
     this.getProfile(this.userId);
   }
-  fileChange(event,id) {
-      let tmpImage = this.imgurl;
+  fileChange(event, id) {
+    let tmpImage = this.imgurl;
     let fileList: FileList = event.target.files;
-   
+
     if (fileList.length > 0) {
       var fileSize = fileList[0].size;
       if (fileSize / 1000 > 2048) {
         this.toastr.error("File must be less that 2 MB.");
-          this.myInputVariable.nativeElement.value = "";
+        this.myInputVariable.nativeElement.value = "";
         //event.target.files = [];
         return;
       }
-      
+
       this.uploaded = true;
       var reader = new FileReader();
       reader.onload = (event: any) => {
@@ -54,32 +54,33 @@ export class ProfilepicComponent implements OnInit {
       let file: File = fileList[0];
       this.formData = new FormData();
       this.formData.append('file', file);
-      this.MainService.uploadpic(this.formData,this.userId).subscribe(
+      this.MainService.uploadpic(this.formData, this.userId).subscribe(
         success => {
-          this.imgurl=success.data.uploadProfilePic;
+          this.imgurl = success.data.uploadProfilePic;
           this.toastr.success(success.message);
 
         },
         error => {
           error = JSON.parse(error._body);
           this.toastr.error(error.message);
-         this.imgurl = tmpImage;    
+          this.imgurl = tmpImage;
           //this.getProfile(id);
         })
     }
   }
-  
+
   getImageUrlForHosting(imgpath: any) {
-        let tmp = ""+imgpath;
-        var index = tmp.indexOf("assets");
-        var tmpPath = "";
-    
-       if (index != -1) {
-          tmpPath = imgpath.substring(index);
-          return tmpPath;
-        }
-            //assets/images/
-          }
+    let tmp = "" + imgpath;
+    var index = tmp.indexOf("mywallet");
+    var tmpPath = "";
+
+    if (index != -1) {
+      tmpPath = imgpath.substring(index);
+      return tmpPath;
+    }
+    return "assets/images/upload-img.jpg";
+    //assets/images/
+  }
 
   getProfile(id) {
     this.isTblLoadingDone = false;
@@ -87,13 +88,13 @@ export class ProfilepicComponent implements OnInit {
       success => {
         this.data = success.data;
         this.wallet = success.data.wallet;
-        if(this.wallet == undefined || this.wallet == null){
-          this.wallet = {walletAddress:'N/A'};
+        if (this.wallet == undefined || this.wallet == null) {
+          this.wallet = { walletAddress: 'N/A' };
         }
         this.uploaded = true;
         this.imgurl = success.data.upLoadProfilePic;
-        if(this.imgurl == undefined || this.imgurl == null){
-        this.imgurl="assets/images/flat-avatar.png";
+        if (this.imgurl == undefined || this.imgurl == null) {
+          this.imgurl = "assets/images/upload-img.jpg";
         }
         this.isTblLoadingDone = true;
       },

@@ -96,7 +96,6 @@ public class CountryDocMappingController {
 			return ResponseUtil.errorResp("No countryDocMapping Obj data is saved ",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		
 		Map<String, Object>  map = ObjectMap.objectMap(countryDocMappingObj);
 		map.put("country", ObjectMap.objectMap(countryDocMappingObj.getCountry()));
 		map.put("documentType", ObjectMap.objectMap(countryDocMappingObj.getDocumentType()));

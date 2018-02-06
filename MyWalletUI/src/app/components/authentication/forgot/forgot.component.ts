@@ -9,7 +9,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 @Component({
   selector: 'app-forgot',
   templateUrl: './forgot.component.html',
-  styleUrls: ['./forgot.component.scss'],
+  styleUrls: ['./forgot.component.scss','./../signin/logincss/main.less'],
   providers: [AuthenticationService, CommonService]
 })
 export class ForgotComponent implements OnInit {
@@ -158,7 +158,11 @@ export class ForgotComponent implements OnInit {
 	 return this.isPasswordMatched;
     }
 	
-
+	trimLeadingAndTrailing() {
+		if (this.forgotPasswordFrom.email) {
+			this.forgotPasswordFrom.email = this.forgotPasswordFrom.email.trim();
+		}
+	}
 	
 
 }

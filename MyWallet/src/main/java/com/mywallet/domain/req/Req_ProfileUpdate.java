@@ -11,8 +11,8 @@ public class Req_ProfileUpdate {
 	@NotNull(message="addressId cannot be null")
 	public Integer addressId;
 
-	@Pattern(regexp="[a-zA-Z]+",message="UserName only alphabets")
-	@Size(min=3,message="userName must be atleast 3 characters !")
+	//@Pattern(regexp="[a-zA-Z]+",message="UserName only alphabets")
+	@Size(min=2,message="userName must be atleast 2 characters !")
 	@NotNull(message="userName cannot be null")
 	@NotEmpty(message="userName can not be empty")
 	public String userName;

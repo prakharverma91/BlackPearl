@@ -110,13 +110,14 @@ export class DocumentComponent implements OnInit {
 
 	getImageUrlForHosting(imgpath: any) {
 			let tmp = ""+imgpath;
-			var index = tmp.indexOf("assets");
+			var index = tmp.indexOf("mywallet");
 			var tmpPath = "";
 		
 			if (index != -1) {
 			  tmpPath = imgpath.substring(index);
 			  return tmpPath;
 			}
+			return "assets/images/upload-img.jpg";
 			//assets/images/
 		}
 

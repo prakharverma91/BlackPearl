@@ -44,7 +44,7 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-	  console.log("insiiiiiiiiiiii");
+
 	this.getAllCountrys();
     this.fieldErrors = {
 		'name':false,
@@ -142,19 +142,31 @@ onFocus(){
 // 	}
 	this.isAuthenticateSpinner = true;
 	this.signup.email = this.signup.email.toLowerCase();
-	 console.log(this.signup);
 	this.AuthenticationService.userSignup(this.signup).subscribe(
 		success => {
 			this.isFormSubmitted = false;
 			this.isAuthenticateSpinner = false;
 			localStorage.setItem('issignup','true'	)
+			
+			if(success.data.lastLogin == null || success.data.lastLogin == 'null' || success.data.lastLogin == undefined){
+				success.data.lastLogin = {};
+				success.data.lastLogin.loginIP = "0.0.0.0"
+				success.data.lastLogin.loginTime="first login"
+			}
+			localStorage.setItem('loginIP', success.data.lastLogin.loginIP);
+			localStorage.setItem('loginTime', success.data.lastLogin.loginTime);
+			localStorage.setItem('email', success.data.email);
+			localStorage.setItem('roleName', success.data.role.roleName);
+			localStorage.setItem('userId', success.data.userId);
+			localStorage.setItem('profileImgUrl', success.data.upLoadProfilePic);
+
 			this.toastr.success(success.message);	
 			this.signup = {};
 			//this.captcha.reset();
 			// this.router.navigateByUrl('/welcome')
 			 
 			// for prevent to redirect
-			console.log("succes fully sign up");
+			console.log("succesfully sign up");
 			this.router.navigateByUrl('/dashboard')
 		},
 		error => {

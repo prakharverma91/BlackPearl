@@ -11,8 +11,8 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 	templateUrl: './signin.component.html',
 	styleUrls: ['./signin.component.scss', './logincss/main.less'],
 	providers: [AuthenticationService, CommonService]
-
 })
+
 export class SigninComponent implements OnInit {
 	isAuthenticateSpinner: any = false;
 	private notification: any = {};
@@ -58,6 +58,7 @@ export class SigninComponent implements OnInit {
 
 				console.log(success);
 				if(success.data.lastLogin == null){
+					success.data.lastLogin={}
 					success.data.lastLogin.loginIP = "0.0.0.0"
 				    success.data.lastLogin.loginTime="first login"
 				}

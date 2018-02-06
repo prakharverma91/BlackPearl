@@ -119,14 +119,15 @@ export class DashboardComponent implements OnInit {
 	}
 	getImageUrlForHosting(imgpath: any) {
 		let tmp = ""+imgpath;
-		var index = tmp.indexOf("assets");
+		var index = tmp.indexOf("mywallet");
 		var tmpPath = "";
 
 	 if (index != -1) {
 			tmpPath = imgpath.substring(index);
 			return tmpPath;
 		}
-				//assets/images/
+		return "assets/images/upload-img.jpg";
+		//assets/images/
 			}
 	///to get old date 
 	oldDate(){

@@ -104,7 +104,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   setTitle( newTitle: string) {
-    this.titleService.setTitle( 'Belrium - Bootstrap 4 Angular Admin Template | ' + newTitle );
+    this.titleService.setTitle( 'MyWallet - Bootstrap 4 Angular Admin Template | ' + newTitle );
   }
 
   toogleSidebar(): void {

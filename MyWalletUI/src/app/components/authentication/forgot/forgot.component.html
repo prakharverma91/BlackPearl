@@ -1,86 +1,48 @@
-  <app-header></app-header>
-  <div class="clearfix"></div>
-   <div class="authentication-loader" *ngIf="isAuthenticateSpinner">
-		<div class="loader09"></div>
-  </div>
-  <div class="middle-part">
-	<div class="signin-form">
-	<form #forgotPasswordFrom="ngForm" (ngSubmit)="forgotSubmit(this); ">
-	<div *ngIf="resetPassword === false">
-      <div class="mb-3">
-        <h4>Forgot password</h4>
-      </div>
-      <fieldset class="form-group" [ngClass]="{'has-danger':(email.invalid && email.touched && isFormSubmitted == true) || (email.touched && email.pristine && isFormSubmitted == true) || (forgotPasswordFrom.submitted && email.invalid && isFormSubmitted == true)}">
-        <label for="username">
-          Enter your email  
-        </label>
-        <input type="text" (keydown.space)="$event.preventDefault()" [(ngModel)]="forgot.email" name="email" #email="ngModel" class="form-control" placeholder="Email" maxlength="250"  pattern="^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$" required />
-				<div *ngIf="email.invalid && (email.dirty || email.touched )" class="error">
-					<div *ngIf="email.errors.required && !isError">
-								Email is required.
-						</div>
-						<div *ngIf="email.errors.pattern">
-							Email is not valid
-						</div>
-						</div>	
-				<div *ngIf="email.errors && isFormSubmitted == true && (email.dirty || email.touched) || (forgotPasswordFrom.submitted && email.invalid && isFormSubmitted == true)" class="error">
-			<!-- <div [hidden]="!email.errors.required">Email is required.</div> -->
-			  <!-- <div [hidden]="!email.errors.pattern">Email is not valid.</div> -->
-		</div> 
-      </fieldset>
-      <button class="btn theme-btn" type="submit">Reset password</button>
-	 </div>
-	</form>
+<app-header></app-header>
+<div class="clearfix"></div>
+<!-- <div class="authentication-loader" *ngIf="isAuthenticateSpinner">
+	<div class="loader09"></div>
+</div> -->
 
-
-	<form #updatePasswordFrom="ngForm" (ngSubmit)="passwordUpdate(changePassword)">
-	 <div *ngIf="resetPassword === true">
-      <div class="mb-3">
-        <h4>Reset password</h4>
-			</div>
-			
-	    <fieldset class="form-group" (keydown.space)="$event.preventDefault()" [ngClass]="{'has-danger':(newPassword.invalid && newPassword.touched && isFormSubmitted == true) || (newPassword.touched && newPassword.pristine && isFormSubmitted == true) || (updatePasswordFrom.submitted && newPassword.invalid && isFormSubmitted == true)}">
-		<label for="newPassword">
-		  New Password 
-		</label>
-		<input type="password" class="form-control" name="newPassword" #newPassword="ngModel" placeholder="********" [(ngModel)]="changePassword.newPassword" minlength="8" maxlength="20" (keyup)="checkMaxLength(20, changePassword.newPassword, 'newPassword')" pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20})" required/>
-		
-		<div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)" class="error">
-			<div *ngIf="newPassword.errors.required">	New Password is required.	</div>
-			<div *ngIf="newPassword.errors.minlength && !newPassword.errors.required">Password should be atleast 8 character long.</div>
-			<div *ngIf="newPassword.errors.pattern && !newPassword.errors.minlength ">Password atleast one uppercase, one lowercase , one number and one special charcter. </div>
-			
+<div class="login-page">
+	<div class="img-container">
+		<div class="text-center pull-right photo">
+			<img src="assets/images/walletlogo3.png" class="user-avatar img-circle img-responsive" />
+			<h1>My
+				<br/>
+				<span>Wallet</span>
+				<br />
+				<small>Version 1.0</small>
+			</h1>
 		</div>
-
-		<div *ngIf="newPassword.errors && isFormSubmitted == true && !fieldErrors.newPassword && (newPassword.dirty || newPassword.touched) || (updatePasswordFrom.submitted && newPassword.invalid && isFormSubmitted == true && !fieldErrors.newPassword)" class="error">
-			  <!-- <div [hidden]="!newPassword.errors.minlength">Password should be more than 8 character.</div> -->
-			  <div [hidden]="!newPassword.errors.pattern || newPassword.errors.minlength">Password atleast one uppercase, one lowercase , one number and one special charcter. </div>
-		</div>
-		<!-- <div [hidden]="!fieldErrors.newPassword" class="error">Password cannot be more than 20 characters.</div> -->
-
-		<div *ngIf="!newPassword?.errors?.minlength && !newPassword?.errors?.pattern && !newPassword?.errors?.required  && fieldErrors.newPassword" class="error">New Password cannot be more than 20 characters.
 	</div>
-		</fieldset>
-	
-		<fieldset class="form-group" (keydown.space)="$event.preventDefault()" [ngClass]="{'has-danger':(confirmPassword.invalid && confirmPassword.touched && isFormSubmitted == true) || (confirmPassword.touched && confirmPassword.pristine && isFormSubmitted == true)|| (updatePasswordFrom.submitted && confirmPassword.invalid && isFormSubmitted == true)}">
-			<label for="password">
-			  Confirm password
-			</label>
-			<input type="password" class="form-control" name="confirmPassword" #confirmPassword="ngModel" placeholder="********" minlength="8" maxlength="20" [(ngModel)]="changePassword.confirmPassword" id="confirmPassword"required/>
-			<div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="error">
-				<div *ngIf="confirmPassword.errors.required">
-						Confirm password is required.
+	<div class="form-content">
+		<form #forgotPasswordFrom="ngForm" role="form" class="bottom-75" (ngSubmit)="forgotSubmit(this)">
+
+			<div class="table-form">
+				<div class="form-groups">
+						<a style="font-size: 150%;">Forgot password</a>
+					<div class="form-group" [ngClass]="{'has-danger':(email.invalid && email.touched && isFormSubmitted == true) || (email.touched && email.pristine && isFormSubmitted == true)|| (forgotPasswordFrom.submitted && email.invalid && isFormSubmitted == true)}">
+						<input type="text" class="form-control input-lg" id="" placeholder="ENTER YOUR EMAIL" (keydown.space)="$event.preventDefault()" name="email"
+						 #email="ngModel" [(ngModel)]="forgot.email" pattern="^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$" placeholder="Enter Your Email"
+						 maxlength="250" (blur)="trimLeadingAndTrailing()" required>
+						<div class="pull-right" *ngIf="(email.invalid && (isFormSubmitted == true || (email.dirty || email.touched)))">
+							<div *ngIf="email.errors.required">Email is required.</div>
+							<div *ngIf="email.errors.pattern">Email is invalid</div>
+						</div>
+
+					</div>
+				
 				</div>
-				</div>		
-			
-			
-			<div *ngIf="changePassword.newPassword && changePassword.newPassword.length > 0 && changePassword.confirmPassword && changePassword.confirmPassword.length > 0 &&  changePassword.confirmPassword != changePassword.newPassword" class="error">Password is not matched</div>
-			<div *ngIf="confirmPassword.errors && isFormSubmitted == true && (confirmPassword.dirty || confirmPassword.touched) || (updatePasswordFrom.submitted && confirmPassword.invalid && isFormSubmitted == true)" class="error">Confrim password is required.</div>
-			</fieldset>
-			
-      <button class="btn theme-btn" type="submit">Submit</button>
-	 </div>
-    </form>
+				<div class="button-container">
+					<button type="submit" class="btn btn-default login">
+						<img src="assets/images/arrow.png" alt="">
+					</button>
+				</div>
+			</div>
+		</form>
 	</div>
-	<h3>Belrium is Most popular <br><span class="c-red">Bitcoin</span> Company</h3>
 </div>
+
+
+
